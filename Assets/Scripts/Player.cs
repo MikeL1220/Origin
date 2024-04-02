@@ -10,7 +10,15 @@ public class Player : MonoBehaviour
     private float _speed;
 
     private float _verticalPos;
-    private float _horizontalPos; 
+    private float _horizontalPos;
+
+    [SerializeField]
+    private GameObject _laser;
+    private float _laserOffset;
+    private float _canFire;
+    [SerializeField]
+    private float _fireRate;
+    private bool _fireLaser;
 
 
     // Start is called before the first frame update
@@ -19,8 +27,8 @@ public class Player : MonoBehaviour
         transform.position = Vector3.zero;
         _verticalPos = transform.position.y;
         _horizontalPos = transform.position.x;
-     
-      
+
+
 
 
 
@@ -30,7 +38,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         Movement();
-        
+        FireLaser();
+
     }
 
     private void Movement()
@@ -52,24 +61,41 @@ public class Player : MonoBehaviour
             transform.Translate(Vector3.left * _speed * Time.deltaTime);
         }
 
-        if( transform.position.x < -11.3f)
+        if (transform.position.x < -11.3f)
         {
             transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
 
         if (transform.position.x > 11.3f)
         {
-            transform.position = new Vector3(-11.3f, transform.position.y, 0); 
+            transform.position = new Vector3(-11.3f, transform.position.y, 0);
         }
 
-        if(transform.position.y > 0.8f)
+        if (transform.position.y > 0.8f)
         {
-            transform.position = new Vector3(transform.position.x, 0.8f, 0); 
+            transform.position = new Vector3(transform.position.x, 0.8f, 0);
         }
 
-        if(transform.position.y < -3.9f)
+        if (transform.position.y < -3.9f)
         {
-            transform.position = new Vector3(transform.position.x, -3.9f, 0); 
+            transform.position = new Vector3(transform.position.x, -3.9f, 0);
         }
     }
-}
+
+    private void FireLaser()
+    {
+        
+        
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+            {
+            _canFire = Time.time + _fireRate;
+
+            Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+            
+           
+            }
+
+
+        }
+    }
+
