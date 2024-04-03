@@ -18,7 +18,9 @@ public class Player : MonoBehaviour
     private float _canFire;
     [SerializeField]
     private float _fireRate;
-    private bool _fireLaser;
+
+    [SerializeField]
+    private int _lives; 
 
 
     // Start is called before the first frame update
@@ -97,5 +99,15 @@ public class Player : MonoBehaviour
 
 
         }
+
+    public void PlayerHealth()
+    {
+        _lives--; 
+
+        if (_lives == 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
     }
 
