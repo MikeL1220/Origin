@@ -41,7 +41,7 @@ public class SpawnManager : MonoBehaviour
             GameObject newEnemy = Instantiate(_enemy, new Vector3(_randomXSpawn,_ySpawn,0), Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;  
             _respawnEnemy = false;
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(5);
             _respawnEnemy = true;
             PlayerDeath();
         }

@@ -8,12 +8,12 @@ public class Enemy : MonoBehaviour
     private float _enemySpeed;
 
     
-    private Player player; 
+    private Player _player; 
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.Find("Player").GetComponent<Player>();
+        _player = GameObject.Find("Player").GetComponent<Player>();
         
     }
 
@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
        if(other.tag == "Laser")
         {
@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
 
        if (other.tag == "Player")
         {
-            player.PlayerHealth();
+            _player.PlayerHealth();
             Destroy(this.gameObject);
         
         }

@@ -9,9 +9,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed;
 
-    private float _verticalPos;
-    private float _horizontalPos;
-
     [SerializeField]
     private GameObject _laser;
     private float _laserOffset;
@@ -27,8 +24,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         transform.position = Vector3.zero;
-        _verticalPos = transform.position.y;
-        _horizontalPos = transform.position.x;
+        _laserOffset = 1.04f;
 
 
 
@@ -78,9 +74,9 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(transform.position.x, -1.2f, 0);
         }
 
-        if (transform.position.y < -5.7f)
+        if (transform.position.y < -5.4f)
         {
-            transform.position = new Vector3(transform.position.x, -5.7f, 0);
+            transform.position = new Vector3(transform.position.x, -5.4f, 0);
         }
     }
 
