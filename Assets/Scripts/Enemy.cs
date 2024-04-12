@@ -7,17 +7,17 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float _enemySpeed;
 
-    
-    private Player _player; 
 
-    // Start is called before the first frame update
+    private Player _player;
+
+
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        
+
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         EnemyMovement();
@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
     {
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
 
-        if (transform.position.y < -7.7) 
+        if (transform.position.y < -7.7)
         {
             transform.position = new Vector3(Random.Range(-10, 10), 6.2f, 0);
         }
@@ -35,17 +35,17 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-       if(other.tag == "Laser")
+        if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
             Destroy(this.gameObject);
         }
 
-       if (other.tag == "Player")
+        if (other.tag == "Player")
         {
             _player.PlayerHealth();
             Destroy(this.gameObject);
-        
+
         }
     }
 

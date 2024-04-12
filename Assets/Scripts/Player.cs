@@ -20,14 +20,14 @@ public class Player : MonoBehaviour
     private int _lives;
 
     [SerializeField]
-    private int _tripleShotCooldown; 
+    private int _tripleShotCooldown;
 
     [SerializeField]
     private GameObject _tripleShot;
-    private bool _tripleShotActive; 
+    private bool _tripleShotActive;
 
 
-    // Start is called before the first frame update
+
     void Start()
     {
         transform.position = Vector3.zero;
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         Movement();
@@ -114,18 +114,18 @@ public class Player : MonoBehaviour
         if (_tripleShotActive == true)
         {
             yield return new WaitForSeconds(_tripleShotCooldown);
-            _tripleShotActive = false; 
+            _tripleShotActive = false;
         }
     }
 
     public void PlayerHealth()
     {
-        _lives--; 
+        _lives--;
 
         if (_lives == 0)
         {
             Destroy(this.gameObject);
         }
     }
-    }
+}
 

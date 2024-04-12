@@ -4,27 +4,22 @@ using UnityEngine;
 
 public class Powerup : MonoBehaviour
 {
-    private Player _player; 
-    
-    [SerializeField]
-    private GameObject _tripleShotPowerup;
+    private Player _player;
 
     [SerializeField]
-    private int _speed; 
+    private int _speed;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
 
-        if (_player == null )
+        if (_player == null)
         {
             Debug.LogError("Player is Null.");
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         PowerupMovement();
@@ -34,7 +29,7 @@ public class Powerup : MonoBehaviour
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        if(transform.position.y < -7.5f)
+        if (transform.position.y < -7.5f)
         {
             Destroy(this.gameObject);
         }
@@ -42,7 +37,7 @@ public class Powerup : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Player")
+        if (other.tag == "Player")
         {
             _player.TripleShotPowerupActice();
             Destroy(this.gameObject);
