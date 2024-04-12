@@ -17,6 +17,10 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _player;
 
+    [SerializeField]
+    private GameObject _tripleShotPowerup;
+    private bool _respawnTripleShotPowerup = true; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +34,7 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
         StartCoroutine(SpawnEnemy());
+        StartCoroutine(PowerUpSpawn());
         
     }
 
@@ -44,6 +49,17 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(5);
             _respawnEnemy = true;
             PlayerDeath();
+        }
+        
+    }
+    IEnumerator PowerUpSpawn()
+    {
+        if(_respawnTripleShotPowerup == true)
+        {
+            GameObject newTripleShot = Instantiate(_tripleShotPowerup, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
+            _respawnTripleShotPowerup = false; 
+            yield return new WaitForSeconds(Random.Range(10, 15));
+            _respawnTripleShotPowerup = true;
         }
         
     }

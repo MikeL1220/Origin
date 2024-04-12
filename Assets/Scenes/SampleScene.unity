@@ -474,6 +474,8 @@ MonoBehaviour:
   _laser: {fileID: 280296315852761545, guid: 0f57f5a20b7be5c4c95fa00cc150a92b, type: 3}
   _fireRate: 0.2
   _lives: 3
+  _tripleShotCooldown: 8
+  _tripleShot: {fileID: 11446428845482107, guid: 4c3db5eb51d9e0f4c8a0d8e1049b55ec, type: 3}
 --- !u!212 &1356246265
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -630,6 +632,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemy: {fileID: 4566277279967091619, guid: 353464e00241ad74882a6e2ea269b47f, type: 3}
   _player: {fileID: 1356246262}
+  _tripleShotPowerup: {fileID: 6610857066905215436, guid: c42c99686a18576469f3aa079d0a5470, type: 3}
 --- !u!4 &1824071645
 Transform:
   m_ObjectHideFlags: 0
