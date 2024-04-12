@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float _speed;
+    [SerializeField]
+    private float _speedBoostModifier; 
 
     [SerializeField]
     private GameObject _laser;
@@ -19,19 +21,27 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives;
 
+    private int _powerUpID; 
+
     [SerializeField]
     private int _tripleShotCooldown;
-
     [SerializeField]
     private GameObject _tripleShot;
     private bool _tripleShotActive;
 
+    [SerializeField]
+    private int _speedBoostCooldown; 
+    private bool _speedBoostActive;
 
+    [SerializeField]
+    private GameObject _shield;
+    private bool _shieldActive; 
 
     void Start()
     {
         transform.position = Vector3.zero;
         _laserOffset = 1.04f;
+        
 
     }
 
@@ -104,7 +114,7 @@ public class Player : MonoBehaviour
 
 
     }
-    public void TripleShotPowerupActice()
+    public void TripleShotPowerupActive()
     {
         _tripleShotActive = true;
         StartCoroutine("TripleShotCooldown");
@@ -117,15 +127,47 @@ public class Player : MonoBehaviour
             _tripleShotActive = false;
         }
     }
+    public void SpeedBoostPowerupActive()
+    {
+        _speedBoostActive = true;
+        _speed += _speedBoostModifier;
+
+        StartCoroutine("SpeedBoostCooldown");
+    }
+    IEnumerator SpeedBoostCooldown()
+    {
+        if (_speedBoostActive == true)
+        {
+            yield return new WaitForSeconds(_speedBoostCooldown);
+            _speedBoostActive = false;
+            _speed -= _speedBoostModifier;
+        }
+    }
+    public void ShieldPowerupActive()
+    {
+        _shieldActive = true;
+        _shield.SetActive(true);
+    }
+   
+
 
     public void PlayerHealth()
     {
-        _lives--;
-
-        if (_lives == 0)
+        if(_shieldActive == true)
         {
-            Destroy(this.gameObject);
+            _shield.SetActive(false);
+            _shieldActive = false; 
         }
+        else
+        {
+            _lives--;
+
+            if (_lives == 0)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+      
     }
 }
 

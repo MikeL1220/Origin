@@ -6,8 +6,15 @@ public class Powerup : MonoBehaviour
 {
     private Player _player;
 
+    private SpawnManager _spawnManager;
+
     [SerializeField]
     private int _speed;
+
+    //0 = no powerup  1 = tripleshot 2 = speed boost  3 = shield
+    [SerializeField]
+    private int _powerUpID; 
+
 
 
     void Start()
@@ -17,6 +24,11 @@ public class Powerup : MonoBehaviour
         if (_player == null)
         {
             Debug.LogError("Player is Null.");
+        }
+        _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Spawn Manager is Null"); 
         }
     }
 
@@ -39,7 +51,20 @@ public class Powerup : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            _player.TripleShotPowerupActice();
+            switch(_powerUpID)
+            {
+                case 1:
+                    _player.TripleShotPowerupActive();
+                    break;
+                case 2:
+                    _player.SpeedBoostPowerupActive();
+                    break;
+                case 3: _player.ShieldPowerupActive();
+                    break;
+                default:
+                    break;
+                    
+            }
             Destroy(this.gameObject);
         }
     }

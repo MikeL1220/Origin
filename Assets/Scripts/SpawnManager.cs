@@ -17,9 +17,15 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _player;
 
+  
+    private bool _respawnPowerup = true;
+
+    // [0] = TripleShot, [1] = Speed Boost, [2] = Shield
     [SerializeField]
-    private GameObject _tripleShotPowerup;
-    private bool _respawnTripleShotPowerup = true;
+    private GameObject[] _powerUpID;
+    private int _powerUpIDSelector;
+
+
 
 
     void Start()
@@ -54,15 +60,17 @@ public class SpawnManager : MonoBehaviour
     }
     IEnumerator PowerUpSpawn()
     {
-        if (_respawnTripleShotPowerup == true)
+        if (_respawnPowerup == true)
         {
-            GameObject newTripleShot = Instantiate(_tripleShotPowerup, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
-            _respawnTripleShotPowerup = false;
+            _powerUpIDSelector = Random.Range(0, 3);
+            GameObject newPowerUp = Instantiate(_powerUpID[_powerUpIDSelector], new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
+            _respawnPowerup = false;
             yield return new WaitForSeconds(Random.Range(10, 15));
-            _respawnTripleShotPowerup = true;
+            _respawnPowerup = true;
         }
 
     }
+   
 
     private void PlayerDeath()
     {
