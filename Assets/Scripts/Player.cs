@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Player : MonoBehaviour
 {
@@ -36,6 +37,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _shield;
     private bool _shieldActive; 
+
+    private UIManager _uiManager;
 
     void Start()
     {
@@ -148,8 +151,7 @@ public class Player : MonoBehaviour
         _shieldActive = true;
         _shield.SetActive(true);
     }
-   
-
+    
 
     public void PlayerHealth()
     {

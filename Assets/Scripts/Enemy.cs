@@ -10,10 +10,14 @@ public class Enemy : MonoBehaviour
 
     private Player _player;
 
+    private UIManager _uiManager;
+
 
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+
+        _uiManager =GameObject.Find("Canvas"). GetComponent<UIManager>();
 
     }
 
@@ -39,12 +43,14 @@ public class Enemy : MonoBehaviour
         {
             Destroy(other.gameObject);
             Destroy(this.gameObject);
+            _uiManager.UpdateScore();
         }
 
         if (other.tag == "Player")
         {
             _player.PlayerHealth();
             Destroy(this.gameObject);
+            _uiManager.UpdateScore();
 
         }
     }
