@@ -44,13 +44,14 @@ public class Enemy : MonoBehaviour
             Destroy(other.gameObject);
             Destroy(this.gameObject);
             _uiManager.UpdateScore();
+           
         }
 
         if (other.tag == "Player")
         {
             _player.PlayerHealth();
             Destroy(this.gameObject);
-            _uiManager.UpdateScore();
+            _uiManager.UpdateLifeCount();
 
         }
     }

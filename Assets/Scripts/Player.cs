@@ -163,6 +163,7 @@ public class Player : MonoBehaviour
         else
         {
             _lives--;
+            
 
             if (_lives == 0)
             {
