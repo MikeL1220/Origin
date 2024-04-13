@@ -25,6 +25,13 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private int _lifeCount;
 
+    [SerializeField]
+    private TMP_Text _gameOverText;
+    [SerializeField]
+    private GameObject _gameOverDisplay;
+    [SerializeField]
+    private bool _gameIsOver; 
+
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +40,7 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + _score;
 
         _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[0];
+        _gameOverDisplay.SetActive(false);
 
     }
 
@@ -41,6 +49,10 @@ public class UIManager : MonoBehaviour
     {
         _scoreText.text = "Score: " + _score;
         UpdateLifeDisplay();
+        GameOver();
+       
+        
+
     }
     public void UpdateScore()
     {
@@ -55,18 +67,45 @@ public class UIManager : MonoBehaviour
                  _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[3];
                 break;
             case 1:
-                _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[2]; ;
+                _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[2]; 
                 break;
             case 2:
                 _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[1];
                 break;
             case 3:
                 _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[0];
+                
                 break;
         }
     }
     public void UpdateLifeCount()
     {
         _lifeCount--; 
+    }
+
+    private void GameOver()
+    {
+        if(_lifeCount < 1 && _gameIsOver ==false)
+        {
+            _gameIsOver=true;
+            StartCoroutine(GameOverFlicker());
+        }
+       
+    }
+
+    public IEnumerator GameOverFlicker()
+    {
+       while(true)
+        {
+            _gameOverDisplay.SetActive(true);
+            yield return new WaitForSeconds(1);
+            _gameOverDisplay.SetActive(false);
+            yield return new WaitForSeconds(1);
+
+        }
+        
+       
+
+
     }
 }

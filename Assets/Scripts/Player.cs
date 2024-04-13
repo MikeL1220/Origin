@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -39,11 +40,14 @@ public class Player : MonoBehaviour
     private bool _shieldActive; 
 
     private UIManager _uiManager;
+    
 
     void Start()
     {
         transform.position = Vector3.zero;
         _laserOffset = 1.04f;
+
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         
 
     }
@@ -53,6 +57,7 @@ public class Player : MonoBehaviour
     {
         Movement();
         FireLaser();
+       
 
     }
 
@@ -163,14 +168,19 @@ public class Player : MonoBehaviour
         else
         {
             _lives--;
-            
-
-            if (_lives == 0)
-            {
-                Destroy(this.gameObject);
-            }
+           
         }
-      
+        if (_lives == 0)
+        {
+            
+            Destroy(this.gameObject);
+
+        }
+
     }
+ 
+    
+   
+   
 }
 
