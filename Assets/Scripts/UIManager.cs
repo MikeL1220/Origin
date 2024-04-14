@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + _score;
         UpdateLifeDisplay();
         GameOver();
+        RestartGame();
        
         
 
@@ -107,5 +109,15 @@ public class UIManager : MonoBehaviour
        
 
 
+    }
+    private void RestartGame()
+    {
+        if( _gameIsOver == true )
+        {
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene(1);
+            }
+        }
     }
 }
