@@ -25,6 +25,10 @@ public class SpawnManager : MonoBehaviour
     private GameObject[] _powerUpID;
     private int _powerUpIDSelector;
 
+     
+
+   
+
 
 
 
@@ -33,19 +37,19 @@ public class SpawnManager : MonoBehaviour
 
         _enemyContainer = GameObject.Find("Enemy Container");
         _ySpawn = 4;
+        
 
     }
-
-
-    void Update()
+    public void StartSpawning()
     {
         StartCoroutine(SpawnEnemy());
         StartCoroutine(PowerUpSpawn());
-
     }
+
 
     IEnumerator SpawnEnemy()
     {
+        yield return new WaitForSeconds(2); 
         if (_respawnEnemy == true && _playerAlive == true)
         {
             _randomXSpawn = Random.Range(-10, 10);
@@ -60,6 +64,7 @@ public class SpawnManager : MonoBehaviour
     }
     IEnumerator PowerUpSpawn()
     {
+        yield return new WaitForSeconds(2);
         if (_respawnPowerup == true)
         {
             _powerUpIDSelector = Random.Range(0, 3);
@@ -79,6 +84,8 @@ public class SpawnManager : MonoBehaviour
             _playerAlive = false;
         }
     }
+
+   
 
 
 }

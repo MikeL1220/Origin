@@ -48,3 +48,6 @@ TagManager:
   - name: ForeGround
     uniqueID: 159917381
     locked: 0
+  - name: VFX
+    uniqueID: 3716192657
+    locked: 0
