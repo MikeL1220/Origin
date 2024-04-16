@@ -12,12 +12,16 @@ public class Enemy : MonoBehaviour
 
     private UIManager _uiManager;
 
+    private Animator _enemyExplosion;
+
 
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
 
         _uiManager =GameObject.Find("Canvas"). GetComponent<UIManager>();
+
+        _enemyExplosion = GetComponent<Animator>();
 
     }
 
@@ -42,7 +46,9 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
-            Destroy(this.gameObject);
+            _enemyExplosion.SetTrigger("EnemyDeath");
+            Destroy(this.gameObject, 1.5f);
+            _enemySpeed = 0;
             _uiManager.UpdateScore();
            
         }
@@ -50,7 +56,9 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Player")
         {
             _player.PlayerHealth();
-            Destroy(this.gameObject);
+            _enemyExplosion.SetTrigger("EnemyDeath");
+            _enemySpeed = 0; 
+            Destroy(this.gameObject,1.5f);
             _uiManager.UpdateLifeCount();
 
         }
