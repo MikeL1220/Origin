@@ -11,11 +11,22 @@ public class Asteroid : MonoBehaviour
     private GameObject _explosion;
 
 
-    private SpawnManager _spawnManager; 
+    private SpawnManager _spawnManager;
+    private bool _startSpawning;
 
-    void Update()
+    private void Start()
     {
+        _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+    }
+
+    private void Update()
+   {
         transform.Rotate(0, 0, 1 * _rotationSpeed * Time.deltaTime);
+
+        if(_startSpawning == true)
+        {
+            _spawnManager.StartSpawning();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -24,10 +35,8 @@ public class Asteroid : MonoBehaviour
         GameObject explosion = Instantiate(_explosion, transform.position, Quaternion.identity);
         Destroy(this.gameObject, 1.2f);
         Destroy(explosion, 3f);
-        _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
-        _spawnManager.StartSpawning();
+        _startSpawning = true;
         
-       
     }
 
    

@@ -40,6 +40,11 @@ public class Player : MonoBehaviour
     private bool _shieldActive; 
 
     private UIManager _uiManager;
+
+    [SerializeField]
+    private GameObject _rightDamage;
+    [SerializeField]
+    private GameObject _leftDamage;
     
 
     void Start()
@@ -168,6 +173,20 @@ public class Player : MonoBehaviour
         else
         {
             _lives--;
+
+            if(_lives == 3)
+            {
+                _rightDamage.SetActive(false);
+                _leftDamage.SetActive(false);
+            }
+            else if(_lives == 2) 
+            {
+                _rightDamage.SetActive(true);
+            }
+            else if (_lives == 1)
+            {
+                _leftDamage.SetActive(true);
+            }
            
         }
         if (_lives == 0)
