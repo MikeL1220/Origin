@@ -14,7 +14,6 @@ public class Enemy : MonoBehaviour
 
     private Animator _enemyExplosion;
 
-    [SerializeField]
     private AudioSource _explosionSound; 
 
 
@@ -25,6 +24,8 @@ public class Enemy : MonoBehaviour
         _uiManager =GameObject.Find("Canvas"). GetComponent<UIManager>();
 
         _enemyExplosion = GetComponent<Animator>();
+
+        _explosionSound = GameObject.Find("Explosion_Sound").GetComponent<AudioSource>();
 
     }
 
@@ -50,8 +51,7 @@ public class Enemy : MonoBehaviour
         {
             Destroy(other.gameObject);
             _enemyExplosion.SetTrigger("EnemyDeath");
-            _explosionSound.Play();
-            _enemySpeed = 0; 
+            this.gameObject.GetComponent<Collider2D>().enabled = false;
             Destroy(this.gameObject, 1.5f);
             _uiManager.UpdateScore();
 
@@ -62,12 +62,14 @@ public class Enemy : MonoBehaviour
             _player.PlayerHealth();
             _enemyExplosion.SetTrigger("EnemyDeath");
             _enemySpeed = 0;
-            _explosionSound.Play();
+            this.gameObject.GetComponent<Collider2D>().enabled = false;
             Destroy(this.gameObject,1.5f);
             _uiManager.UpdateLifeCount();
             
 
         }
+        _explosionSound.Play();
+        
     }
 
 }

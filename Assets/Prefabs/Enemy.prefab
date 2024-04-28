@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemySpeed: 4
+  _explosionSound: {fileID: 0}
 --- !u!212 &1757819903292793808
 SpriteRenderer:
   m_ObjectHideFlags: 0

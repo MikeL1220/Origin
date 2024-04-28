@@ -52,9 +52,6 @@ public class UIManager : MonoBehaviour
         UpdateLifeDisplay();
         GameOver();
         RestartGame();
-       
-        
-
     }
     public void UpdateScore()
     {

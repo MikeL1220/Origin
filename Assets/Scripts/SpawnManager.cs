@@ -28,24 +28,38 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private AudioSource _powerupSound;
 
+    [SerializeField]
+    private bool _gameStart;
+
+    [SerializeField]
+    private Asteroid _asteroid; 
 
 
 
 
     void Start()
     {
-
+        _asteroid = GetComponent<Asteroid>();   
         _enemyContainer = GameObject.Find("Enemy Container");
         _ySpawn = 4;
         
+        
 
     }
-
+    private void Update()
+    {
+        StartSpawning();
+    }
 
     public void StartSpawning()
     {
-        StartCoroutine(SpawnEnemy());
-        StartCoroutine(PowerUpSpawn());
+        
+        if(_asteroid == null)
+        {
+            StartCoroutine(SpawnEnemy());
+            StartCoroutine(PowerUpSpawn());
+        }
+        
     }
 
 

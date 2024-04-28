@@ -15,7 +15,7 @@ public class Asteroid : MonoBehaviour
     private bool _startSpawning;
 
     [SerializeField]
-    private AudioSource _explosionSound; 
+    private AudioSource _explosionSound;
 
     private void Start()
     {
@@ -25,11 +25,6 @@ public class Asteroid : MonoBehaviour
     private void Update()
    {
         transform.Rotate(0, 0, 1 * _rotationSpeed * Time.deltaTime);
-
-        if(_startSpawning == true)
-        {
-            _spawnManager.StartSpawning();
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -39,9 +34,14 @@ public class Asteroid : MonoBehaviour
         _explosionSound.Play();
         Destroy(this.gameObject, 1.2f);
         Destroy(explosion, 3f);
-        _startSpawning = true;
+        
         
     }
+
+   
+    
+
+    
 
    
 }
