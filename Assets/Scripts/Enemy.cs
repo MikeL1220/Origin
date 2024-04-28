@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour
 
     private Animator _enemyExplosion;
 
+    [SerializeField]
+    private AudioSource _explosionSound; 
+
 
     void Start()
     {
@@ -47,19 +50,22 @@ public class Enemy : MonoBehaviour
         {
             Destroy(other.gameObject);
             _enemyExplosion.SetTrigger("EnemyDeath");
+            _explosionSound.Play();
+            _enemySpeed = 0; 
             Destroy(this.gameObject, 1.5f);
-            _enemySpeed = 0;
             _uiManager.UpdateScore();
-           
+
         }
 
         if (other.tag == "Player")
         {
             _player.PlayerHealth();
             _enemyExplosion.SetTrigger("EnemyDeath");
-            _enemySpeed = 0; 
+            _enemySpeed = 0;
+            _explosionSound.Play();
             Destroy(this.gameObject,1.5f);
             _uiManager.UpdateLifeCount();
+            
 
         }
     }

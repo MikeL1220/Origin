@@ -14,6 +14,9 @@ public class Asteroid : MonoBehaviour
     private SpawnManager _spawnManager;
     private bool _startSpawning;
 
+    [SerializeField]
+    private AudioSource _explosionSound; 
+
     private void Start()
     {
         _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
@@ -33,6 +36,7 @@ public class Asteroid : MonoBehaviour
     {
         Destroy(other.gameObject);
         GameObject explosion = Instantiate(_explosion, transform.position, Quaternion.identity);
+        _explosionSound.Play();
         Destroy(this.gameObject, 1.2f);
         Destroy(explosion, 3f);
         _startSpawning = true;

@@ -13,9 +13,9 @@ public class Powerup : MonoBehaviour
 
     //0 = no powerup  1 = tripleshot 2 = speed boost  3 = shield
     [SerializeField]
-    private int _powerUpID; 
+    private int _powerUpID;
 
-
+    
 
     void Start()
     {
@@ -29,7 +29,7 @@ public class Powerup : MonoBehaviour
         if (_spawnManager == null)
         {
             Debug.LogError("Spawn Manager is Null"); 
-        }
+        }  
     }
 
     void Update()
@@ -65,6 +65,7 @@ public class Powerup : MonoBehaviour
                     break;
                     
             }
+            _spawnManager.PowerUpSound();
             Destroy(this.gameObject);
         }
     }

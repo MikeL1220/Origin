@@ -45,6 +45,11 @@ public class Player : MonoBehaviour
     private GameObject _rightDamage;
     [SerializeField]
     private GameObject _leftDamage;
+
+    [SerializeField]
+    private AudioSource _laserSound;
+    [SerializeField]
+    private AudioSource _explosionSound;
     
 
     void Start()
@@ -117,11 +122,14 @@ public class Player : MonoBehaviour
             if (_tripleShotActive == true)
             {
                 Instantiate(_tripleShot, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+                
             }
             else
             {
                 Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+                
             }
+            _laserSound.Play();
 
         }
 
@@ -173,6 +181,7 @@ public class Player : MonoBehaviour
         else
         {
             _lives--;
+            _explosionSound.Play();
 
             if(_lives == 3)
             {

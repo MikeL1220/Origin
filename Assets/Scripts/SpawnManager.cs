@@ -25,9 +25,9 @@ public class SpawnManager : MonoBehaviour
     private GameObject[] _powerUpID;
     private int _powerUpIDSelector;
 
-     
+    [SerializeField]
+    private AudioSource _powerupSound;
 
-   
 
 
 
@@ -87,7 +87,10 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-   
+   public void PowerUpSound()
+    {
+        _powerupSound.Play();
+    }
 
 
 }
