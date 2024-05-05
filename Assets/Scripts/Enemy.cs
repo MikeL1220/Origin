@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private float _enemySpeed;
+ 
+    private bool _enemyLaserCooldown; 
 
 
     private Player _player;
@@ -28,12 +30,16 @@ public class Enemy : MonoBehaviour
 
         _explosionSound = GameObject.Find("Explosion_Sound").GetComponent<AudioSource>();
 
+       
+
     }
 
 
     void Update()
     {
         EnemyMovement();
+        
+        
     }
 
     private void EnemyMovement()
@@ -65,8 +71,7 @@ public class Enemy : MonoBehaviour
             _enemySpeed = 0;
             this.gameObject.GetComponent<Collider2D>().enabled = false;
             Destroy(this.gameObject,1.5f);
-            //_uiManager.UpdateLifeCount();
-           // 
+           
 
         }
         _explosionSound.Play();

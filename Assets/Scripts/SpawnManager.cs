@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    private Enemy _enemyScript; 
     [SerializeField]
     private GameObject _enemy;
 
@@ -32,14 +33,17 @@ public class SpawnManager : MonoBehaviour
     private bool _gameStart;
 
     [SerializeField]
-    private Asteroid _asteroid; 
+    private Asteroid _asteroid;
 
+    [SerializeField]
+    private GameObject _enemyLaser; 
 
 
 
     void Start()
     {
-        _asteroid = GetComponent<Asteroid>();   
+        _asteroid = GetComponent<Asteroid>();
+        _enemyScript = GetComponent<Enemy>();
         _enemyContainer = GameObject.Find("Enemy Container");
         _ySpawn = 4;
         
@@ -58,6 +62,7 @@ public class SpawnManager : MonoBehaviour
         {
             StartCoroutine(SpawnEnemy());
             StartCoroutine(PowerUpSpawn());
+           
         }
         
     }
@@ -71,6 +76,7 @@ public class SpawnManager : MonoBehaviour
             _randomXSpawn = Random.Range(-10, 10);
             GameObject newEnemy = Instantiate(_enemy, new Vector3(_randomXSpawn, _ySpawn, 0), Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
+            GameObject enemyLaser = Instantiate(_enemyLaser, new Vector3(newEnemy.transform.position.x, newEnemy.transform.position.y, 0), Quaternion.identity);
             _respawnEnemy = false;
             yield return new WaitForSeconds(5);
             _respawnEnemy = true;

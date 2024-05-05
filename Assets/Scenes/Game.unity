@@ -1848,7 +1848,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.0050905943, y: -0.036649942}
@@ -2175,6 +2175,7 @@ MonoBehaviour:
   _powerupSound: {fileID: 183628998}
   _gameStart: 0
   _asteroid: {fileID: 1963192875}
+  _enemyLaser: {fileID: 280296315852761545, guid: d84d653c80c607744b039da80a9b9d85, type: 3}
 --- !u!4 &1824071645
 Transform:
   m_ObjectHideFlags: 0

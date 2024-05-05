@@ -219,13 +219,20 @@ public class Player : MonoBehaviour
         if  (_gameIsOver == false)
         {
             _gameIsOver = true;
-           _uiManager. StartCoroutine("GameOverFlicker");
+           _uiManager.StartCoroutine("GameOverFlicker");
         }
 
     }
 
 
-
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == "EnemyLaser")
+        {
+            PlayerHealth();
+            Destroy(other.gameObject);
+        }
+    }
 
 
 }

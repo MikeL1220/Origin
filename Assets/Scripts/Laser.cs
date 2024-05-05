@@ -10,11 +10,26 @@ public class Laser : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.up * _laserSpeed * Time.deltaTime);
-
-        if (transform.position.y > 6)
+        LaserMovement();
+    }
+    private void LaserMovement()
+    {
+        if (tag == "EnemyLaser")
         {
-            Destroy(this.gameObject);
+            transform.Translate(Vector3.down * _laserSpeed * Time.deltaTime);
+            if (transform.position.y < -10)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+        else
+        {
+            transform.Translate(Vector3.up * _laserSpeed * Time.deltaTime);
+
+            if (transform.position.y > 6)
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 

@@ -71,7 +71,6 @@ public class UIManager : MonoBehaviour
                 break;
             case 3:
                 _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[0];
-
                 break;
         }
     }
