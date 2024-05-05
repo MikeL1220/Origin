@@ -6,6 +6,8 @@ public class Powerup : MonoBehaviour
 {
     private Player _player;
 
+    private bool _shieldStatus;
+
     private SpawnManager _spawnManager;
 
     [SerializeField]
@@ -59,7 +61,7 @@ public class Powerup : MonoBehaviour
                 case 2:
                     _player.SpeedBoostPowerupActive();
                     break;
-                case 3: _player.ShieldPowerupActive();
+                case 3: _player.ShieldPowerupActive(_shieldStatus);
                     break;
                 default:
                     break;

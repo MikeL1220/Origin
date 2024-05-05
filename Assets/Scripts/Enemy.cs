@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
 
 
     private Player _player;
+    
 
     private UIManager _uiManager;
 
@@ -64,8 +65,8 @@ public class Enemy : MonoBehaviour
             _enemySpeed = 0;
             this.gameObject.GetComponent<Collider2D>().enabled = false;
             Destroy(this.gameObject,1.5f);
-            _uiManager.UpdateLifeCount();
-            
+            //_uiManager.UpdateLifeCount();
+           // 
 
         }
         _explosionSound.Play();

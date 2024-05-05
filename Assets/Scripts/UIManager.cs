@@ -24,9 +24,6 @@ public class UIManager : MonoBehaviour
     private Sprite _currentLife;
 
     [SerializeField]
-    private int _lifeCount;
-
-    [SerializeField]
     private TMP_Text _gameOverText;
     [SerializeField]
     private GameObject _gameOverDisplay;
@@ -49,18 +46,19 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         _scoreText.text = "Score: " + _score;
-        UpdateLifeDisplay();
-        GameOver();
         RestartGame();
+
     }
     public void UpdateScore()
     {
          _score += _scoreIncrease;
+        
                
     }
-    public void UpdateLifeDisplay()
+    public void UpdateLifeDisplay(int currentLife)
     {
-        switch (_lifeCount)
+        
+        switch (currentLife)
         {
             case 0:
                  _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[3];
@@ -73,29 +71,16 @@ public class UIManager : MonoBehaviour
                 break;
             case 3:
                 _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[0];
-                
+
                 break;
         }
-    }
-    public void UpdateLifeCount()
-    {
-        _lifeCount--; 
-    }
-
-    private void GameOver()
-    {
-        if(_lifeCount < 1 && _gameIsOver ==false)
-        {
-            _gameIsOver=true;
-            StartCoroutine(GameOverFlicker());
-        }
-       
     }
 
     public IEnumerator GameOverFlicker()
     {
        while(true)
         {
+            _gameIsOver = true;
             _gameOverDisplay.SetActive(true);
             yield return new WaitForSeconds(1);
             _gameOverDisplay.SetActive(false);
@@ -108,13 +93,14 @@ public class UIManager : MonoBehaviour
 
     }
     private void RestartGame()
-    {
-        if( _gameIsOver == true )
+    {  
+        if(_gameIsOver == true && Input.GetKeyDown(KeyCode.R))
         {
-            if(Input.GetKeyDown(KeyCode.R))
-            {
+           
                 SceneManager.LoadScene(1);
-            }
+                _gameIsOver = false;
+           
         }
+          
     }
 }

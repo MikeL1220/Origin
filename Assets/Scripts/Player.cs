@@ -50,7 +50,10 @@ public class Player : MonoBehaviour
     private AudioSource _laserSound;
     [SerializeField]
     private AudioSource _explosionSound;
-    
+
+    private bool _gameIsOver;
+
+
 
     void Start()
     {
@@ -164,8 +167,9 @@ public class Player : MonoBehaviour
             _speed -= _speedBoostModifier;
         }
     }
-    public void ShieldPowerupActive()
+    public void ShieldPowerupActive(bool shieldActive)
     {
+        _shieldActive = shieldActive;
         _shieldActive = true;
         _shield.SetActive(true);
     }
@@ -173,6 +177,7 @@ public class Player : MonoBehaviour
 
     public void PlayerHealth()
     {
+       
         if(_shieldActive == true)
         {
             _shield.SetActive(false);
@@ -181,6 +186,7 @@ public class Player : MonoBehaviour
         else
         {
             _lives--;
+            _uiManager.UpdateLifeDisplay(_lives);   
             _explosionSound.Play();
 
             if(_lives == 3)
@@ -201,14 +207,26 @@ public class Player : MonoBehaviour
         if (_lives == 0)
         {
             
+            GameOver();
             Destroy(this.gameObject);
 
         }
 
     }
- 
-    
-   
-   
+
+    private void GameOver()
+    {
+        if  (_gameIsOver == false)
+        {
+            _gameIsOver = true;
+           _uiManager. StartCoroutine("GameOverFlicker");
+        }
+
+    }
+
+
+
+
+
 }
 
