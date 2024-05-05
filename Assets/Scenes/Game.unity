@@ -1877,6 +1877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _thursterSpeed: 1.2
   _speedBoostModifier: 5
   _laser: {fileID: 280296315852761545, guid: 0f57f5a20b7be5c4c95fa00cc150a92b, type: 3}
   _fireRate: 0.2

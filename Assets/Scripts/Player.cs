@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed;
     [SerializeField]
+    private float _thursterSpeed;
+    [SerializeField]
     private float _speedBoostModifier; 
 
     [SerializeField]
@@ -93,6 +95,16 @@ public class Player : MonoBehaviour
             transform.Translate(Vector3.left * _speed * Time.deltaTime);
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _speed += _thursterSpeed; 
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift)) 
+        {
+        
+            _speed -= _thursterSpeed;   
+        }
+
         if (transform.position.x < -11.3f)
         {
             transform.position = new Vector3(11.3f, transform.position.y, 0);
@@ -143,6 +155,7 @@ public class Player : MonoBehaviour
         _tripleShotActive = true;
         StartCoroutine("TripleShotCooldown");
     }
+
     IEnumerator TripleShotCooldown()
     {
         if (_tripleShotActive == true)
@@ -151,6 +164,7 @@ public class Player : MonoBehaviour
             _tripleShotActive = false;
         }
     }
+
     public void SpeedBoostPowerupActive()
     {
         _speedBoostActive = true;
@@ -158,6 +172,7 @@ public class Player : MonoBehaviour
 
         StartCoroutine("SpeedBoostCooldown");
     }
+
     IEnumerator SpeedBoostCooldown()
     {
         if (_speedBoostActive == true)
@@ -167,6 +182,7 @@ public class Player : MonoBehaviour
             _speed -= _speedBoostModifier;
         }
     }
+
     public void ShieldPowerupActive(bool shieldActive)
     {
         _shieldActive = shieldActive;
@@ -174,7 +190,6 @@ public class Player : MonoBehaviour
         _shield.SetActive(true);
     }
     
-
     public void PlayerHealth()
     {
        
