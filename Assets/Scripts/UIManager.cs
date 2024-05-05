@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     private int _scoreIncrease;
 
 
-    [SerializeField] 
+    [SerializeField]
     private TMP_Text _scoreText;
 
     [SerializeField]
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject _gameOverDisplay;
     [SerializeField]
-    private bool _gameIsOver; 
+    private bool _gameIsOver;
 
 
     // Start is called before the first frame update
@@ -47,24 +47,25 @@ public class UIManager : MonoBehaviour
     {
         _scoreText.text = "Score: " + _score;
         RestartGame();
+        ExitGame();
 
     }
     public void UpdateScore()
     {
-         _score += _scoreIncrease;
-        
-               
+        _score += _scoreIncrease;
+
+
     }
     public void UpdateLifeDisplay(int currentLife)
     {
-        
+
         switch (currentLife)
         {
             case 0:
-                 _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[3];
+                _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[3];
                 break;
             case 1:
-                _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[2]; 
+                _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[2];
                 break;
             case 2:
                 _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[1];
@@ -77,7 +78,7 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator GameOverFlicker()
     {
-       while(true)
+        while (true)
         {
             _gameIsOver = true;
             _gameOverDisplay.SetActive(true);
@@ -86,20 +87,30 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(1);
 
         }
-        
-       
+
+
 
 
     }
     private void RestartGame()
-    {  
-        if(_gameIsOver == true && Input.GetKeyDown(KeyCode.R))
+    {
+        if (_gameIsOver == true && Input.GetKeyDown(KeyCode.R))
         {
-           
-                SceneManager.LoadScene(1);
-                _gameIsOver = false;
-           
+
+            SceneManager.LoadScene(1);
+            _gameIsOver = false;
+
         }
-          
+
+    }
+
+    private void ExitGame()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape)) 
+        { 
+        
+            Application.Quit();
+        
+        }
     }
 }
