@@ -19,6 +19,11 @@ public class UIManager : MonoBehaviour
     private TMP_Text _scoreText;
 
     [SerializeField]
+    private TMP_Text _ammoCount;
+    [SerializeField]
+    private int _ammo; 
+
+    [SerializeField]
     private Sprite[] _livesDisplay;
     [SerializeField]
     private Sprite _currentLife;
@@ -53,6 +58,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         _scoreText.text = "Score: " + _score;
+        _ammoCount.text = _ammo + "/15";
         RestartGame();
         ExitGame();
 
@@ -81,6 +87,11 @@ public class UIManager : MonoBehaviour
                 _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[0];
                 break;
         }
+    }
+
+    public void UpdateAmmoCount()
+    {
+        _ammo--; 
     }
 
     public void ShieldHealthVisualizer(int shieldHealth)

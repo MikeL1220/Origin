@@ -21,6 +21,10 @@ public class Player : MonoBehaviour
     private float _canFire;
     [SerializeField]
     private float _fireRate;
+    [SerializeField]
+    private int _maxAmmo;
+    [SerializeField]
+    private int _currentAmmo; 
 
     [SerializeField]
     private int _lives;
@@ -130,24 +134,29 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
-
-
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        if(_currentAmmo > 0)
         {
-            _canFire = Time.time + _fireRate;
-
-            if (_tripleShotActive == true)
+            if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
             {
-                Instantiate(_tripleShot, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
-                
-            }
-            else
-            {
-                Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
-                
-            }
-            _laserSound.Play();
+                _canFire = Time.time + _fireRate;
 
+
+                if (_tripleShotActive == true)
+                {
+                    Instantiate(_tripleShot, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+
+                }
+                else
+                {
+                    Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+
+                }
+                _laserSound.Play();
+                _currentAmmo--;
+                _uiManager.UpdateAmmoCount();
+
+
+            }
         }
 
 
