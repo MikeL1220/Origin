@@ -24,6 +24,11 @@ public class UIManager : MonoBehaviour
     private Sprite _currentLife;
 
     [SerializeField]
+    private Sprite[] _shieldHealthVisualizer;
+
+    private Sprite _currentShieldHealthVisualizer; 
+
+    [SerializeField]
     private TMP_Text _gameOverText;
     [SerializeField]
     private GameObject _gameOverDisplay;
@@ -39,6 +44,8 @@ public class UIManager : MonoBehaviour
 
         _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[0];
         _gameOverDisplay.SetActive(false);
+
+        _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[0];
 
     }
 
@@ -75,6 +82,29 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+
+    public void ShieldHealthVisualizer(int shieldHealth)
+    { 
+        switch(shieldHealth) 
+        {
+            case 1:
+                _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[3];
+                break;
+            case 2:
+                _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[2];
+                break;
+            case 3:
+                _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[1];
+                break;
+            default:
+                _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[0];
+                break;
+
+        }
+    
+    
+    }
+
 
     public IEnumerator GameOverFlicker()
     {

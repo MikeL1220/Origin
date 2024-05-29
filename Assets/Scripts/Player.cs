@@ -39,7 +39,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private GameObject _shield;
-    private bool _shieldActive; 
+    private bool _shieldActive;
+    [SerializeField]
+    private int _shieldHealth; 
 
     private UIManager _uiManager;
 
@@ -188,6 +190,8 @@ public class Player : MonoBehaviour
         _shieldActive = shieldActive;
         _shieldActive = true;
         _shield.SetActive(true);
+        _shieldHealth = 3; 
+        _uiManager.ShieldHealthVisualizer(_shieldHealth);
     }
     
     public void PlayerHealth()
@@ -195,8 +199,14 @@ public class Player : MonoBehaviour
        
         if(_shieldActive == true)
         {
-            _shield.SetActive(false);
-            _shieldActive = false; 
+            _shieldHealth--; 
+            _uiManager.ShieldHealthVisualizer(_shieldHealth);
+            if (_shieldHealth == 0)
+            {
+                _shield.SetActive(false);
+                _shieldActive = false;
+            }
+            
         }
         else
         {
