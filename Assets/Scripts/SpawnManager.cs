@@ -36,9 +36,11 @@ public class SpawnManager : MonoBehaviour
     private Asteroid _asteroid;
 
     [SerializeField]
-    private GameObject _enemyLaser; 
+    private GameObject _enemyLaser;
 
-
+    [SerializeField]
+    private GameObject _ammoBox;
+    private bool _ammoSpawned; 
 
     void Start()
     {
@@ -62,6 +64,7 @@ public class SpawnManager : MonoBehaviour
         {
             StartCoroutine(SpawnEnemy());
             StartCoroutine(PowerUpSpawn());
+            StartCoroutine(AmmoSpawn());
            
         }
         
@@ -96,6 +99,19 @@ public class SpawnManager : MonoBehaviour
             _respawnPowerup = true;
         }
 
+    }
+
+    IEnumerator AmmoSpawn()
+    {
+       if(_ammoSpawned == false)
+        {
+
+            GameObject newAmmoBox = Instantiate(_ammoBox, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
+            _ammoSpawned = true;
+            yield return new WaitForSeconds(20);
+            _ammoSpawned = false;
+        }
+        
     }
    
 

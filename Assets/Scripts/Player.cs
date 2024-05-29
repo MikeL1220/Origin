@@ -153,7 +153,7 @@ public class Player : MonoBehaviour
                 }
                 _laserSound.Play();
                 _currentAmmo--;
-                _uiManager.UpdateAmmoCount();
+                _uiManager.ReduceAmmoCount();
 
 
             }
@@ -264,6 +264,12 @@ public class Player : MonoBehaviour
         if(other.tag == "EnemyLaser")
         {
             PlayerHealth();
+            Destroy(other.gameObject);
+        }
+        else if(other.tag == "AmmoBox")
+        {
+            _currentAmmo = 15;
+            _uiManager.ResetAmmoCount();
             Destroy(other.gameObject);
         }
     }

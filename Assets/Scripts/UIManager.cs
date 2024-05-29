@@ -89,9 +89,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateAmmoCount()
+    public void ReduceAmmoCount()
     {
         _ammo--; 
+    }
+
+    public void ResetAmmoCount()
+    {
+        _ammo = 15; 
     }
 
     public void ShieldHealthVisualizer(int shieldHealth)
