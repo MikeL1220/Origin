@@ -40,7 +40,11 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject _ammoBox;
-    private bool _ammoSpawned; 
+    private bool _ammoSpawned;
+
+    [SerializeField]
+    private GameObject _repairKit;
+    private bool _repairKitSpawned; 
 
     void Start()
     {
@@ -65,6 +69,7 @@ public class SpawnManager : MonoBehaviour
             StartCoroutine(SpawnEnemy());
             StartCoroutine(PowerUpSpawn());
             StartCoroutine(AmmoSpawn());
+            StartCoroutine(RepairKitSpawn());
            
         }
         
@@ -112,6 +117,18 @@ public class SpawnManager : MonoBehaviour
             _ammoSpawned = false;
         }
         
+    }
+
+    IEnumerator RepairKitSpawn()
+    {
+        if(_repairKitSpawned == false)
+        {
+            GameObject newRepairKit = Instantiate(_repairKit, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
+            _repairKitSpawned = true;
+            yield return new WaitForSeconds(35);
+            _repairKitSpawned = false;
+        }
+       
     }
    
 

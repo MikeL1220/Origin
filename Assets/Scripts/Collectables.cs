@@ -6,7 +6,7 @@ public class Ammo : MonoBehaviour
 {
 
     [SerializeField]
-    private int _ammoSpeed; 
+    private int _collectableSpeed; 
 
     void Update()
     {
@@ -15,7 +15,12 @@ public class Ammo : MonoBehaviour
 
     private void Movement()
     {
-        transform.Translate(Vector3.down * _ammoSpeed * Time.deltaTime);
+        transform.Translate(Vector3.down * _collectableSpeed * Time.deltaTime);
+
+        if (transform.position.y < -7.5f)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
 }

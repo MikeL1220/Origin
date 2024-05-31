@@ -231,10 +231,12 @@ public class Player : MonoBehaviour
             else if(_lives == 2) 
             {
                 _rightDamage.SetActive(true);
+                _leftDamage.SetActive(false);
             }
             else if (_lives == 1)
             {
                 _leftDamage.SetActive(true);
+                _rightDamage.SetActive(true);
             }
            
         }
@@ -261,7 +263,25 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "EnemyLaser")
+        switch((other.tag))
+        {
+            case "EnemyLaser":
+                PlayerHealth();
+                Destroy(other.gameObject);
+                break;
+            case "AmmoBox":
+                _currentAmmo = 15;
+                _uiManager.ResetAmmoCount();
+                Destroy(other.gameObject);
+                break;
+            case "RepairKit":
+                _lives = _lives + 2;
+                PlayerHealth();
+                Destroy(other.gameObject);
+                break;
+        }
+
+          /*  if (other.tag == "EnemyLaser")
         {
             PlayerHealth();
             Destroy(other.gameObject);
@@ -271,7 +291,7 @@ public class Player : MonoBehaviour
             _currentAmmo = 15;
             _uiManager.ResetAmmoCount();
             Destroy(other.gameObject);
-        }
+        }*/
     }
 
 
