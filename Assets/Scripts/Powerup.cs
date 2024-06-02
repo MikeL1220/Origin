@@ -63,6 +63,9 @@ public class Powerup : MonoBehaviour
                     break;
                 case 3: _player.ShieldPowerupActive(_shieldStatus);
                     break;
+                    case 4:
+                    _player.RapidFirePowerupActive();
+                    break;
                 default:
                     break;
                     

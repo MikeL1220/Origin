@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
@@ -13,7 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _thursterSpeed;
     [SerializeField]
-    private float _speedBoostModifier; 
+    private float _speedBoostModifier;
 
     [SerializeField]
     private GameObject _laser;
@@ -24,12 +25,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _maxAmmo;
     [SerializeField]
-    private int _currentAmmo; 
+    private int _currentAmmo;
 
     [SerializeField]
     private int _lives;
 
-    private int _powerUpID; 
+    private int _powerUpID;
 
     [SerializeField]
     private int _tripleShotCooldown;
@@ -37,15 +38,16 @@ public class Player : MonoBehaviour
     private GameObject _tripleShot;
     private bool _tripleShotActive;
 
+
     [SerializeField]
-    private int _speedBoostCooldown; 
+    private int _speedBoostCooldown;
     private bool _speedBoostActive;
 
     [SerializeField]
     private GameObject _shield;
     private bool _shieldActive;
     [SerializeField]
-    private int _shieldHealth; 
+    private int _shieldHealth;
 
     private UIManager _uiManager;
 
@@ -69,7 +71,7 @@ public class Player : MonoBehaviour
         _laserOffset = 1.04f;
 
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-        
+
 
     }
 
@@ -79,6 +81,7 @@ public class Player : MonoBehaviour
         Movement();
         FireLaser();
        
+
 
     }
 
@@ -103,12 +106,12 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            _speed += _thursterSpeed; 
+            _speed += _thursterSpeed;
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift)) 
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-        
-            _speed -= _thursterSpeed;   
+
+            _speed -= _thursterSpeed;
         }
 
         if (transform.position.x < -11.3f)
@@ -134,7 +137,7 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
-        if(_currentAmmo > 0)
+        if (_currentAmmo > 0)
         {
             if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
             {
@@ -157,7 +160,10 @@ public class Player : MonoBehaviour
 
 
             }
+           
         }
+        
+       
 
 
     }
@@ -174,6 +180,25 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(_tripleShotCooldown);
             _tripleShotActive = false;
         }
+    }
+
+    public void RapidFirePowerupActive()
+    {
+       StartCoroutine(RapidFireLasers());
+    }
+
+    IEnumerator RapidFireLasers()
+    {
+
+        for(int i = 0; i < 100; i++)
+        {
+            Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+            yield return new WaitForSeconds(.1f);
+            _laserSound.Play();
+        }
+        
+        
+
     }
 
     public void SpeedBoostPowerupActive()
@@ -199,36 +224,36 @@ public class Player : MonoBehaviour
         _shieldActive = shieldActive;
         _shieldActive = true;
         _shield.SetActive(true);
-        _shieldHealth = 3; 
+        _shieldHealth = 3;
         _uiManager.ShieldHealthVisualizer(_shieldHealth);
     }
-    
+
     public void PlayerHealth()
     {
-       
-        if(_shieldActive == true)
+
+        if (_shieldActive == true)
         {
-            _shieldHealth--; 
+            _shieldHealth--;
             _uiManager.ShieldHealthVisualizer(_shieldHealth);
             if (_shieldHealth == 0)
             {
                 _shield.SetActive(false);
                 _shieldActive = false;
             }
-            
+
         }
         else
         {
             _lives--;
-            _uiManager.UpdateLifeDisplay(_lives);   
+            _uiManager.UpdateLifeDisplay(_lives);
             _explosionSound.Play();
 
-            if(_lives == 3)
+            if (_lives == 3)
             {
                 _rightDamage.SetActive(false);
                 _leftDamage.SetActive(false);
             }
-            else if(_lives == 2) 
+            else if (_lives == 2)
             {
                 _rightDamage.SetActive(true);
                 _leftDamage.SetActive(false);
@@ -238,11 +263,11 @@ public class Player : MonoBehaviour
                 _leftDamage.SetActive(true);
                 _rightDamage.SetActive(true);
             }
-           
+
         }
         if (_lives == 0)
         {
-            
+
             GameOver();
             Destroy(this.gameObject);
 
@@ -252,10 +277,10 @@ public class Player : MonoBehaviour
 
     private void GameOver()
     {
-        if  (_gameIsOver == false)
+        if (_gameIsOver == false)
         {
             _gameIsOver = true;
-           _uiManager.StartCoroutine("GameOverFlicker");
+            _uiManager.StartCoroutine("GameOverFlicker");
         }
 
     }
@@ -263,7 +288,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        switch((other.tag))
+        switch ((other.tag))
         {
             case "EnemyLaser":
                 PlayerHealth();
@@ -281,19 +306,9 @@ public class Player : MonoBehaviour
                 break;
         }
 
-          /*  if (other.tag == "EnemyLaser")
-        {
-            PlayerHealth();
-            Destroy(other.gameObject);
-        }
-        else if(other.tag == "AmmoBox")
-        {
-            _currentAmmo = 15;
-            _uiManager.ResetAmmoCount();
-            Destroy(other.gameObject);
-        }*/
     }
-
-
 }
+
+
+
 

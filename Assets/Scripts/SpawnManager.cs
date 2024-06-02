@@ -44,7 +44,9 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject _repairKit;
-    private bool _repairKitSpawned; 
+    private bool _repairKitSpawned;
+
+    private bool _rarePowerUpSpawned; 
 
     void Start()
     {
@@ -68,6 +70,7 @@ public class SpawnManager : MonoBehaviour
         {
             StartCoroutine(SpawnEnemy());
             StartCoroutine(PowerUpSpawn());
+            StartCoroutine(RarePowerUpSpawn());
             StartCoroutine(AmmoSpawn());
             StartCoroutine(RepairKitSpawn());
            
@@ -106,11 +109,30 @@ public class SpawnManager : MonoBehaviour
 
     }
 
+    IEnumerator RarePowerUpSpawn()
+    {
+        yield return new WaitForSeconds(60);
+        if(_rarePowerUpSpawned ==false)
+        {
+            
+            int spawnChance = Random.Range(0, 4);
+            if (spawnChance >= 3)
+            {
+                GameObject rarePowerUp = Instantiate(_powerUpID[3], new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
+                _rarePowerUpSpawned = true;
+                yield return new WaitForSeconds(60);
+                _rarePowerUpSpawned = false;
+            }
+        }
+
+    }
+
     IEnumerator AmmoSpawn()
     {
-       if(_ammoSpawned == false)
+        yield return new WaitForSeconds(5);
+        if (_ammoSpawned == false)
         {
-
+            
             GameObject newAmmoBox = Instantiate(_ammoBox, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
             _ammoSpawned = true;
             yield return new WaitForSeconds(20);
@@ -121,8 +143,10 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator RepairKitSpawn()
     {
-        if(_repairKitSpawned == false)
+        yield return new WaitForSeconds(5);
+        if (_repairKitSpawned == false)
         {
+            
             GameObject newRepairKit = Instantiate(_repairKit, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
             _repairKitSpawned = true;
             yield return new WaitForSeconds(35);
