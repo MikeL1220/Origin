@@ -39,6 +39,12 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject _enemyLaser;
+    [SerializeField]
+    private AudioSource _laserSound;
+    [SerializeField]
+    private AudioSource _explosionSound;
+    [SerializeField]
+    private AudioSource _collectionSound; 
 
     [SerializeField]
     private GameObject _ammoBox;
@@ -91,6 +97,7 @@ public class SpawnManager : MonoBehaviour
             newEnemy.transform.parent = _enemyContainer.transform;
             GameObject enemyLaser = Instantiate(_enemyLaser, new Vector3(newEnemy.transform.position.x, newEnemy.transform.position.y, 0), Quaternion.identity);
             _respawnEnemy = false;
+            _laserSound.Play();
             yield return new WaitForSeconds(5);
             _respawnEnemy = true;
             PlayerDeath();

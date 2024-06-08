@@ -68,6 +68,8 @@ public class Player : MonoBehaviour
     private AudioSource _laserSound;
     [SerializeField]
     private AudioSource _explosionSound;
+    [SerializeField]
+    private AudioSource _collectionSound;
 
     private bool _gameIsOver;
 
@@ -349,17 +351,20 @@ public class Player : MonoBehaviour
             {
                 case "EnemyLaser":
                     PlayerHealth();
-                _camera.StartCoroutine("CameraShake"); 
+                _camera.StartCoroutine("CameraShake");
+                _explosionSound.Play();
                     Destroy(other.gameObject);
                     break;
                 case "AmmoBox":
                     _currentAmmo = 15;
                     _uiManager.ResetAmmoCount();
+                _collectionSound.Play();    
                     Destroy(other.gameObject);
                     break;
                 case "RepairKit":
                     _lives = _lives + 2;
                     PlayerHealth();
+                _collectionSound.Play();
                     Destroy(other.gameObject);
                     break;
             }

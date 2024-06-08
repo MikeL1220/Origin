@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Sprite[] _shieldHealthVisualizer;
+    [SerializeField]
+    private GameObject _shieldHealthObj; 
 
     private Sprite _currentShieldHealthVisualizer;
 
@@ -108,12 +110,15 @@ public class UIManager : MonoBehaviour
         {
             case 1:
                 _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[3];
+               _shieldHealthObj.transform.position = new Vector3(-7.2f, 4.21f, 0.02f); 
                 break;
             case 2:
                 _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[2];
+                _shieldHealthObj.transform.position = new Vector3(-6.8f, 4.21f, 0.02f);
                 break;
             case 3:
                 _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[1];
+                _shieldHealthObj.transform.position = new Vector3(-6.51f, 4.21f, 0.02f);
                 break;
             default:
                 _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[0];

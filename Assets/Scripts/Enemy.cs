@@ -63,6 +63,7 @@ public class Enemy : MonoBehaviour
             this.gameObject.GetComponent<Collider2D>().enabled = false;
             Destroy(this.gameObject, 1.5f);
             _uiManager.UpdateScore();
+            _explosionSound.Play();
 
         }
 
@@ -74,10 +75,11 @@ public class Enemy : MonoBehaviour
             _enemySpeed = 0;
             this.gameObject.GetComponent<Collider2D>().enabled = false;
             Destroy(this.gameObject,1.5f);
-           
+            _explosionSound.Play();
+
 
         }
-        _explosionSound.Play();
+       
         
     }
 
