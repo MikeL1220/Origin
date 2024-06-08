@@ -31,7 +31,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Sprite[] _shieldHealthVisualizer;
 
-    private Sprite _currentShieldHealthVisualizer; 
+    private Sprite _currentShieldHealthVisualizer;
+
+    private Slider _thrusterMeter; 
 
     [SerializeField]
     private TMP_Text _gameOverText;
@@ -52,6 +54,7 @@ public class UIManager : MonoBehaviour
 
         _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[0];
 
+        _thrusterMeter = GameObject.Find("Thruster_Charge").GetComponentInChildren<Slider>();
     }
 
     // Update is called once per frame
@@ -119,6 +122,11 @@ public class UIManager : MonoBehaviour
         }
     
     
+    }
+
+    public void ThrusterMeter(int thrusterCharge)
+    {
+        _thrusterMeter.value = thrusterCharge;
     }
 
 

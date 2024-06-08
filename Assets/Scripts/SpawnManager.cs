@@ -21,7 +21,7 @@ public class SpawnManager : MonoBehaviour
   
     private bool _respawnPowerup = true;
 
-    // [0] = TripleShot, [1] = Speed Boost, [2] = Shield
+    // [0] = TripleShot, [1] = Speed Boost, [2] = Shield [3] = Rapid Fire
     [SerializeField]
     private GameObject[] _powerUpID;
     private int _powerUpIDSelector;
@@ -34,6 +34,8 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private Asteroid _asteroid;
+    [SerializeField]
+    private GameObject _asteroidObject; 
 
     [SerializeField]
     private GameObject _enemyLaser;
@@ -60,13 +62,13 @@ public class SpawnManager : MonoBehaviour
     }
     private void Update()
     {
-        StartSpawning();
+       
     }
 
     public void StartSpawning()
     {
         
-        if(_asteroid == null)
+        if(_asteroidObject == null)
         {
             StartCoroutine(SpawnEnemy());
             StartCoroutine(PowerUpSpawn());
