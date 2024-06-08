@@ -71,6 +71,8 @@ public class Player : MonoBehaviour
 
     private bool _gameIsOver;
 
+    private CameraEffects _camera; 
+
 
 
     void Start()
@@ -82,6 +84,8 @@ public class Player : MonoBehaviour
         _currentSpeed = _baseSpeed;
         _thrusterEngageCoroutine = null;
         _thrusterChargeCoroutine = null;
+
+        _camera = GameObject.Find("Main Camera").GetComponent<CameraEffects>();
 
 
     }
@@ -345,6 +349,7 @@ public class Player : MonoBehaviour
             {
                 case "EnemyLaser":
                     PlayerHealth();
+                _camera.StartCoroutine("CameraShake"); 
                     Destroy(other.gameObject);
                     break;
                 case "AmmoBox":

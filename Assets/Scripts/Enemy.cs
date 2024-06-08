@@ -17,7 +17,9 @@ public class Enemy : MonoBehaviour
 
     private Animator _enemyExplosion;
 
-    private AudioSource _explosionSound; 
+    private AudioSource _explosionSound;
+
+    private CameraEffects _camera; 
 
 
     void Start()
@@ -30,7 +32,7 @@ public class Enemy : MonoBehaviour
 
         _explosionSound = GameObject.Find("Explosion_Sound").GetComponent<AudioSource>();
 
-       
+       _camera = GameObject.Find("Main Camera").GetComponent<CameraEffects>(); 
 
     }
 
@@ -68,6 +70,7 @@ public class Enemy : MonoBehaviour
         {
             _player.PlayerHealth();
             _enemyExplosion.SetTrigger("EnemyDeath");
+            _camera.StartCoroutine("CameraShake");
             _enemySpeed = 0;
             this.gameObject.GetComponent<Collider2D>().enabled = false;
             Destroy(this.gameObject,1.5f);

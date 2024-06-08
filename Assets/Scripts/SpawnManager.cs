@@ -62,7 +62,7 @@ public class SpawnManager : MonoBehaviour
     }
     private void Update()
     {
-       
+       StartSpawning();
     }
 
     public void StartSpawning()
