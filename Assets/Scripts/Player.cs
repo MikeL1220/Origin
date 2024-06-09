@@ -38,7 +38,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives;
 
-    private int _powerUpID;
 
     [SerializeField]
     private int _tripleShotCooldown;
@@ -73,7 +72,7 @@ public class Player : MonoBehaviour
 
     private bool _gameIsOver;
 
-    private CameraEffects _camera; 
+    private CameraEffects _camera;
 
 
 
@@ -100,10 +99,8 @@ public class Player : MonoBehaviour
         FireLaser();
         ThusterActication();
 
-
-
-
     }
+
 
     private void Movement()
     {
@@ -141,6 +138,8 @@ public class Player : MonoBehaviour
         }
 
     }
+
+
     private void ThusterActication()
     {
         if (Input.GetKey(KeyCode.LeftShift) && _thrusterEngageCoroutine == null)
@@ -149,10 +148,10 @@ public class Player : MonoBehaviour
 
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift) && _thrusterChargeCoroutine == null) 
+        if (Input.GetKeyUp(KeyCode.LeftShift) && _thrusterChargeCoroutine == null)
         {
             _thrusterChargeCoroutine = StartCoroutine(ThrusterCharge());
-        
+
         }
 
     }
@@ -161,14 +160,14 @@ public class Player : MonoBehaviour
     {
 
         while (Input.GetKey(KeyCode.LeftShift))
-        { 
+        {
             _currentSpeed = 5;
             _thrusterCharge--;
 
             yield return new WaitForSeconds(1);
         }
-        _thrusterEngageCoroutine = null; 
-        
+        _thrusterEngageCoroutine = null;
+
     }
 
     IEnumerator ThrusterCharge()
@@ -188,189 +187,198 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(1);
 
         }
-        _thrusterChargeCoroutine = null; 
+        _thrusterChargeCoroutine = null;
 
-        
+
     }
 
 
-        private void FireLaser()
+
+    private void FireLaser()
+    {
+        if (_currentAmmo > 0)
         {
-            if (_currentAmmo > 0)
+            if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
             {
-                if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+                _canFire = Time.time + _fireRate;
+
+
+                if (_tripleShotActive == true)
                 {
-                    _canFire = Time.time + _fireRate;
-
-
-                    if (_tripleShotActive == true)
-                    {
-                        Instantiate(_tripleShot, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
-
-                    }
-                    else
-                    {
-                        Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
-
-                    }
-                    _laserSound.Play();
-                    _currentAmmo--;
-                    _uiManager.ReduceAmmoCount();
-
+                    Instantiate(_tripleShot, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
 
                 }
+                else
+                {
+                    Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
 
-            }
-
-
-
-
-        }
-        public void TripleShotPowerupActive()
-        {
-            _tripleShotActive = true;
-            StartCoroutine("TripleShotCooldown");
-        }
-
-        IEnumerator TripleShotCooldown()
-        {
-            if (_tripleShotActive == true)
-            {
-                yield return new WaitForSeconds(_tripleShotCooldown);
-                _tripleShotActive = false;
-            }
-        }
-
-        public void RapidFirePowerupActive()
-        {
-            StartCoroutine(RapidFireLasers());
-        }
-
-        IEnumerator RapidFireLasers()
-        {
-
-            for (int i = 0; i < 100; i++)
-            {
-                Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
-                yield return new WaitForSeconds(.1f);
+                }
                 _laserSound.Play();
+                _currentAmmo--;
+                _uiManager.ReduceAmmoCount();
+
+
             }
 
-
-
         }
 
-        public void SpeedBoostPowerupActive()
-        {
-            _speedBoostActive = true;
-            _currentSpeed += _speedBoostModifier;
+    }
 
-            StartCoroutine("SpeedBoostCooldown");
+
+    public void TripleShotPowerupActive()
+    {
+        _tripleShotActive = true;
+        StartCoroutine("TripleShotCooldown");
+    }
+
+    IEnumerator TripleShotCooldown()
+    {
+        if (_tripleShotActive == true)
+        {
+            yield return new WaitForSeconds(_tripleShotCooldown);
+            _tripleShotActive = false;
+        }
+    }
+
+
+    public void RapidFirePowerupActive()
+    {
+        StartCoroutine(RapidFireLasers());
+    }
+
+    IEnumerator RapidFireLasers()
+    {
+
+        for (int i = 0; i < 100; i++)
+        {
+            Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+            yield return new WaitForSeconds(.1f);
+            _laserSound.Play();
         }
 
-        IEnumerator SpeedBoostCooldown()
-        {
-            if (_speedBoostActive == true)
-            {
-                yield return new WaitForSeconds(_speedBoostCooldown);
-                _speedBoostActive = false;
-                _currentSpeed -= _speedBoostModifier;
-            }
-        }
+    }
 
-        public void ShieldPowerupActive(bool shieldActive)
+
+
+    public void SpeedBoostPowerupActive()
+    {
+        _speedBoostActive = true;
+        _currentSpeed += _speedBoostModifier;
+
+        StartCoroutine("SpeedBoostCooldown");
+    }
+
+    IEnumerator SpeedBoostCooldown()
+    {
+        if (_speedBoostActive == true)
         {
-            _shieldActive = shieldActive;
-            _shieldActive = true;
-            _shield.SetActive(true);
-            _shieldHealth = 3;
+            yield return new WaitForSeconds(_speedBoostCooldown);
+            _speedBoostActive = false;
+            _currentSpeed -= _speedBoostModifier;
+        }
+    }
+
+
+
+    public void ShieldPowerupActive(bool shieldActive)
+    {
+        _shieldActive = shieldActive;
+        _shieldActive = true;
+        _shield.SetActive(true);
+        _shieldHealth = 3;
+        _uiManager.ShieldHealthVisualizer(_shieldHealth);
+    }
+
+
+
+    public void PlayerHealth()
+    {
+
+        if (_shieldActive == true)
+        {
+            _shieldHealth--;
             _uiManager.ShieldHealthVisualizer(_shieldHealth);
-        }
-
-        public void PlayerHealth()
-        {
-
-            if (_shieldActive == true)
+            if (_shieldHealth == 0)
             {
-                _shieldHealth--;
-                _uiManager.ShieldHealthVisualizer(_shieldHealth);
-                if (_shieldHealth == 0)
-                {
-                    _shield.SetActive(false);
-                    _shieldActive = false;
-                }
-
-            }
-            else
-            {
-                _lives--;
-                _uiManager.UpdateLifeDisplay(_lives);
-                _explosionSound.Play();
-
-                if (_lives == 3)
-                {
-                    _rightDamage.SetActive(false);
-                    _leftDamage.SetActive(false);
-                }
-                else if (_lives == 2)
-                {
-                    _rightDamage.SetActive(true);
-                    _leftDamage.SetActive(false);
-                }
-                else if (_lives == 1)
-                {
-                    _leftDamage.SetActive(true);
-                    _rightDamage.SetActive(true);
-                }
-
-            }
-            if (_lives == 0)
-            {
-
-                GameOver();
-                Destroy(this.gameObject);
-
+                _shield.SetActive(false);
+                _shieldActive = false;
             }
 
         }
-
-        private void GameOver()
+        else
         {
-            if (_gameIsOver == false)
+            _lives--;
+            _uiManager.UpdateLifeDisplay(_lives);
+            _explosionSound.Play();
+
+            if (_lives == 3)
             {
-                _gameIsOver = true;
-                _uiManager.StartCoroutine("GameOverFlicker");
+                _rightDamage.SetActive(false);
+                _leftDamage.SetActive(false);
+            }
+            else if (_lives == 2)
+            {
+                _rightDamage.SetActive(true);
+                _leftDamage.SetActive(false);
+            }
+            else if (_lives == 1)
+            {
+                _leftDamage.SetActive(true);
+                _rightDamage.SetActive(true);
             }
 
         }
-
-
-        private void OnTriggerEnter2D(Collider2D other)
+        if (_lives == 0)
         {
-            switch ((other.tag))
-            {
-                case "EnemyLaser":
-                    PlayerHealth();
+
+            GameOver();
+            Destroy(this.gameObject);
+
+        }
+
+    }
+
+
+
+    private void GameOver()
+    {
+        if (_gameIsOver == false)
+        {
+            _gameIsOver = true;
+            _uiManager.StartCoroutine("GameOverFlicker");
+        }
+
+    }
+
+
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        switch ((other.tag))
+        {
+            case "EnemyLaser":
+                PlayerHealth();
                 _camera.StartCoroutine("CameraShake");
                 _explosionSound.Play();
-                    Destroy(other.gameObject);
-                    break;
-                case "AmmoBox":
-                    _currentAmmo = 15;
-                    _uiManager.ResetAmmoCount();
-                _collectionSound.Play();    
-                    Destroy(other.gameObject);
-                    break;
-                case "RepairKit":
-                    _lives = _lives + 2;
-                    PlayerHealth();
+                Destroy(other.gameObject);
+                break;
+            case "AmmoBox":
+                _currentAmmo = 15;
+                _uiManager.ResetAmmoCount();
                 _collectionSound.Play();
-                    Destroy(other.gameObject);
-                    break;
-            }
-
+                Destroy(other.gameObject);
+                break;
+            case "RepairKit":
+                _lives = _lives + 2;
+                PlayerHealth();
+                _collectionSound.Play();
+                Destroy(other.gameObject);
+                break;
         }
+
     }
+}
 
 
 

@@ -6,7 +6,7 @@ public class Ammo : MonoBehaviour
 {
 
     [SerializeField]
-    private int _collectableSpeed; 
+    private int _collectableSpeed;
 
     void Update()
     {

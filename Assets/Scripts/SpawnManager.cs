@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    private Enemy _enemyScript; 
+    private Enemy _enemyScript;
     [SerializeField]
     private GameObject _enemy;
 
@@ -18,7 +18,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _player;
 
-  
+
     private bool _respawnPowerup = true;
 
     // [0] = TripleShot, [1] = Speed Boost, [2] = Shield [3] = Rapid Fire
@@ -33,18 +33,12 @@ public class SpawnManager : MonoBehaviour
     private bool _gameStart;
 
     [SerializeField]
-    private Asteroid _asteroid;
-    [SerializeField]
-    private GameObject _asteroidObject; 
+    private GameObject _asteroidObject;
 
     [SerializeField]
     private GameObject _enemyLaser;
     [SerializeField]
     private AudioSource _laserSound;
-    [SerializeField]
-    private AudioSource _explosionSound;
-    [SerializeField]
-    private AudioSource _collectionSound; 
 
     [SerializeField]
     private GameObject _ammoBox;
@@ -54,42 +48,40 @@ public class SpawnManager : MonoBehaviour
     private GameObject _repairKit;
     private bool _repairKitSpawned;
 
-    private bool _rarePowerUpSpawned; 
+    private bool _rarePowerUpSpawned;
 
     void Start()
     {
-        _asteroid = GetComponent<Asteroid>();
         _enemyScript = GetComponent<Enemy>();
         _enemyContainer = GameObject.Find("Enemy Container");
         _ySpawn = 4;
-        
-        
-
     }
+
     private void Update()
     {
-       StartSpawning();
+        StartSpawning();
     }
+
 
     public void StartSpawning()
     {
-        
-        if(_asteroidObject == null)
+
+        if (_asteroidObject == null)
         {
             StartCoroutine(SpawnEnemy());
             StartCoroutine(PowerUpSpawn());
             StartCoroutine(RarePowerUpSpawn());
             StartCoroutine(AmmoSpawn());
             StartCoroutine(RepairKitSpawn());
-           
+
         }
-        
+
     }
 
 
     IEnumerator SpawnEnemy()
     {
-        yield return new WaitForSeconds(2); 
+        yield return new WaitForSeconds(2);
         if (_respawnEnemy == true && _playerAlive == true)
         {
             _randomXSpawn = Random.Range(-10, 10);
@@ -104,6 +96,8 @@ public class SpawnManager : MonoBehaviour
         }
 
     }
+
+
     IEnumerator PowerUpSpawn()
     {
         yield return new WaitForSeconds(2);
@@ -118,12 +112,13 @@ public class SpawnManager : MonoBehaviour
 
     }
 
+
     IEnumerator RarePowerUpSpawn()
     {
         yield return new WaitForSeconds(60);
-        if(_rarePowerUpSpawned ==false)
+        if (_rarePowerUpSpawned == false)
         {
-            
+
             int spawnChance = Random.Range(0, 4);
             if (spawnChance >= 3)
             {
@@ -136,34 +131,36 @@ public class SpawnManager : MonoBehaviour
 
     }
 
+
     IEnumerator AmmoSpawn()
     {
         yield return new WaitForSeconds(5);
         if (_ammoSpawned == false)
         {
-            
+
             GameObject newAmmoBox = Instantiate(_ammoBox, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
             _ammoSpawned = true;
             yield return new WaitForSeconds(20);
             _ammoSpawned = false;
         }
-        
+
     }
+
 
     IEnumerator RepairKitSpawn()
     {
         yield return new WaitForSeconds(5);
         if (_repairKitSpawned == false)
         {
-            
+
             GameObject newRepairKit = Instantiate(_repairKit, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
             _repairKitSpawned = true;
             yield return new WaitForSeconds(35);
             _repairKitSpawned = false;
         }
-       
+
     }
-   
+
 
     private void PlayerDeath()
     {
@@ -173,7 +170,8 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-   public void PowerUpSound()
+
+    public void PowerUpSound()
     {
         _powerupSound.Play();
     }

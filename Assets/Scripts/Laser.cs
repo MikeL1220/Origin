@@ -12,6 +12,7 @@ public class Laser : MonoBehaviour
     {
         LaserMovement();
     }
+
     private void LaserMovement()
     {
         if (tag == "EnemyLaser")

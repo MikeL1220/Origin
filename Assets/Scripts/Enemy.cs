@@ -6,12 +6,11 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private float _enemySpeed;
- 
-    private bool _enemyLaserCooldown; 
+
+    //  private bool _enemyLaserCooldown; 
 
 
     private Player _player;
-    
 
     private UIManager _uiManager;
 
@@ -19,20 +18,20 @@ public class Enemy : MonoBehaviour
 
     private AudioSource _explosionSound;
 
-    private CameraEffects _camera; 
+    private CameraEffects _camera;
 
 
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
 
-        _uiManager =GameObject.Find("Canvas"). GetComponent<UIManager>();
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 
         _enemyExplosion = GetComponent<Animator>();
 
         _explosionSound = GameObject.Find("Explosion_Sound").GetComponent<AudioSource>();
 
-       _camera = GameObject.Find("Main Camera").GetComponent<CameraEffects>(); 
+        _camera = GameObject.Find("Main Camera").GetComponent<CameraEffects>();
 
     }
 
@@ -40,9 +39,10 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         EnemyMovement();
-        
-        
+
     }
+
+
 
     private void EnemyMovement()
     {
@@ -53,6 +53,8 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(Random.Range(-10, 10), 6.2f, 0);
         }
     }
+
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -74,13 +76,13 @@ public class Enemy : MonoBehaviour
             _camera.StartCoroutine("CameraShake");
             _enemySpeed = 0;
             this.gameObject.GetComponent<Collider2D>().enabled = false;
-            Destroy(this.gameObject,1.5f);
+            Destroy(this.gameObject, 1.5f);
             _explosionSound.Play();
 
 
         }
-       
-        
+
+
     }
 
 }

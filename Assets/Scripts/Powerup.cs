@@ -17,7 +17,7 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private int _powerUpID;
 
-    
+
 
     void Start()
     {
@@ -30,14 +30,15 @@ public class Powerup : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         if (_spawnManager == null)
         {
-            Debug.LogError("Spawn Manager is Null"); 
-        }  
+            Debug.LogError("Spawn Manager is Null");
+        }
     }
 
     void Update()
     {
         PowerupMovement();
     }
+
 
     private void PowerupMovement()
     {
@@ -49,11 +50,12 @@ public class Powerup : MonoBehaviour
         }
     }
 
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
-            switch(_powerUpID)
+            switch (_powerUpID)
             {
                 case 1:
                     _player.TripleShotPowerupActive();
@@ -61,14 +63,15 @@ public class Powerup : MonoBehaviour
                 case 2:
                     _player.SpeedBoostPowerupActive();
                     break;
-                case 3: _player.ShieldPowerupActive(_shieldStatus);
+                case 3:
+                    _player.ShieldPowerupActive(_shieldStatus);
                     break;
-                    case 4:
+                case 4:
                     _player.RapidFirePowerupActive();
                     break;
                 default:
                     break;
-                    
+
             }
             _spawnManager.PowerUpSound();
             Destroy(this.gameObject);

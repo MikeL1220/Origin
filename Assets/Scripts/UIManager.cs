@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    private Player _player;
 
     [SerializeField]
     private int _score;
@@ -21,7 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TMP_Text _ammoCount;
     [SerializeField]
-    private int _ammo; 
+    private int _ammo;
 
     [SerializeField]
     private Sprite[] _livesDisplay;
@@ -31,11 +30,11 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Sprite[] _shieldHealthVisualizer;
     [SerializeField]
-    private GameObject _shieldHealthObj; 
+    private GameObject _shieldHealthObj;
 
     private Sprite _currentShieldHealthVisualizer;
 
-    private Slider _thrusterMeter; 
+    private Slider _thrusterMeter;
 
     [SerializeField]
     private TMP_Text _gameOverText;
@@ -45,10 +44,8 @@ public class UIManager : MonoBehaviour
     private bool _gameIsOver;
 
 
-    // Start is called before the first frame update
     void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<Player>();
         _scoreText.text = "Score: " + _score;
 
         _currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[0];
@@ -59,7 +56,7 @@ public class UIManager : MonoBehaviour
         _thrusterMeter = GameObject.Find("Thruster_Charge").GetComponentInChildren<Slider>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         _scoreText.text = "Score: " + _score;
@@ -74,6 +71,8 @@ public class UIManager : MonoBehaviour
 
 
     }
+
+
     public void UpdateLifeDisplay(int currentLife)
     {
 
@@ -94,23 +93,26 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
     public void ReduceAmmoCount()
     {
-        _ammo--; 
+        _ammo--;
     }
+
 
     public void ResetAmmoCount()
     {
-        _ammo = 15; 
+        _ammo = 15;
     }
 
+
     public void ShieldHealthVisualizer(int shieldHealth)
-    { 
-        switch(shieldHealth) 
+    {
+        switch (shieldHealth)
         {
             case 1:
                 _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[3];
-               _shieldHealthObj.transform.position = new Vector3(-7.2f, 4.21f, 0.02f); 
+                _shieldHealthObj.transform.position = new Vector3(-7.2f, 4.21f, 0.02f);
                 break;
             case 2:
                 _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[2];
@@ -125,9 +127,10 @@ public class UIManager : MonoBehaviour
                 break;
 
         }
-    
-    
+
+
     }
+
 
     public void ThrusterMeter(int thrusterCharge)
     {
@@ -151,6 +154,8 @@ public class UIManager : MonoBehaviour
 
 
     }
+
+
     private void RestartGame()
     {
         if (_gameIsOver == true && Input.GetKeyDown(KeyCode.R))
@@ -163,13 +168,14 @@ public class UIManager : MonoBehaviour
 
     }
 
+
     private void ExitGame()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)) 
-        { 
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+
             Application.Quit();
-        
+
         }
     }
 }
