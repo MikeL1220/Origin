@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _baseSpeed;
     [SerializeField]
-    private float _thursterSpeed;
+    private float _thursterSpeedModifier;
     [SerializeField]
     private int _maxThrusters;
     [SerializeField]
@@ -98,12 +98,14 @@ public class Player : MonoBehaviour
         _uiManager.ThrusterMeter(_thrusterCharge);
         FireLaser();
         ThusterActication();
+        PlayerHealthVisual();
 
     }
 
 
     private void Movement()
     {
+        //Consider changing to Input Manager(Get.Axis) 
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -126,6 +128,12 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(-11.3f, transform.position.y, 0);
         }
+
+        if(transform.position.x < -11.3f)
+        {
+            transform.position = new Vector3(11.3f, transform.position.y, 0);
+        }
+        //add left hand wrapping 
 
         if (transform.position.y > -1.2f)
         {
@@ -154,14 +162,22 @@ public class Player : MonoBehaviour
 
         }
 
+        if(_thrusterCharge <= 0)
+        {
+            _currentSpeed = _baseSpeed;
+        }
+
     }
 
     IEnumerator ThrustersEngage()
     {
-
-        while (Input.GetKey(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.LeftShift) && _thrusterCharge > 0) 
         {
-            _currentSpeed = 5;
+            _currentSpeed = _currentSpeed + _thursterSpeedModifier;
+        }
+      
+        while (Input.GetKey(KeyCode.LeftShift) && _thrusterCharge > 0)
+        {
             _thrusterCharge--;
 
             yield return new WaitForSeconds(1);
@@ -172,11 +188,13 @@ public class Player : MonoBehaviour
 
     IEnumerator ThrusterCharge()
     {
-
-
-        while (true)
+        if(Input.GetKeyUp(KeyCode.LeftShift) && _currentSpeed > _baseSpeed)
         {
-            _currentSpeed = 3;
+            _currentSpeed = _currentSpeed - _thursterSpeedModifier; 
+        }
+
+        while (_thrusterCharge < _maxThrusters)
+        {
             _thrusterCharge++;
             if (_thrusterCharge > _maxThrusters || Input.GetKey(KeyCode.LeftShift))
             {
@@ -290,10 +308,9 @@ public class Player : MonoBehaviour
     }
 
 
-
-    public void PlayerHealth()
+    //Divide into 2 seperate dmage and update dmage visual 
+    public void Damage()
     {
-
         if (_shieldActive == true)
         {
             _shieldHealth--;
@@ -310,7 +327,13 @@ public class Player : MonoBehaviour
             _lives--;
             _uiManager.UpdateLifeDisplay(_lives);
             _explosionSound.Play();
+        }
+    }
+    private void PlayerHealthVisual()
+    {
+      
 
+            //this never happens - I belive this is checked when we gain lifr form 2 tro 3 
             if (_lives == 3)
             {
                 _rightDamage.SetActive(false);
@@ -327,7 +350,7 @@ public class Player : MonoBehaviour
                 _rightDamage.SetActive(true);
             }
 
-        }
+     
         if (_lives == 0)
         {
 
@@ -358,7 +381,7 @@ public class Player : MonoBehaviour
         switch ((other.tag))
         {
             case "EnemyLaser":
-                PlayerHealth();
+                Damage();
                 _camera.StartCoroutine("CameraShake");
                 _explosionSound.Play();
                 Destroy(other.gameObject);
@@ -370,8 +393,12 @@ public class Player : MonoBehaviour
                 Destroy(other.gameObject);
                 break;
             case "RepairKit":
-                _lives = _lives + 2;
-                PlayerHealth();
+                //changed to 1 from 2 
+                if(_lives < 3)
+                {
+                    _lives = _lives + 1;
+                    _uiManager.UpdateLifeDisplay(_lives);
+                }
                 _collectionSound.Play();
                 Destroy(other.gameObject);
                 break;

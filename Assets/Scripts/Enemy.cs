@@ -71,7 +71,7 @@ public class Enemy : MonoBehaviour
 
         if (other.tag == "Player")
         {
-            _player.PlayerHealth();
+            _player.Damage();
             _enemyExplosion.SetTrigger("EnemyDeath");
             _camera.StartCoroutine("CameraShake");
             _enemySpeed = 0;
