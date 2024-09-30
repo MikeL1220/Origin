@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 65991f2854f6011469ae98a3bd99d4ab
+guid: b6661f80e2ad7f84ea265fa3df8efcbb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SpriteSheet-Shields_0
+      name: shield_spriteSheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 1056
-        width: 1127
-        height: 480
+        y: 1024
+        width: 426.66666
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,20 +150,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: db4bb390b323a2b4a9d95ed0108edafb
-      internalID: 1067003809
+      spriteID: 70c2e7f8bae360b4da753871909b0606
+      internalID: -474796048
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SpriteSheet-Shields_1
+      name: shield_spriteSheet_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 537
-        width: 768
-        height: 480
+        x: 426
+        y: 1024
+        width: 426.66666
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,20 +171,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7060552258d48a84e88cccafb8570c94
-      internalID: -1792662493
+      spriteID: 9288dac8a8f28a54fab68559360db2d6
+      internalID: -1645597969
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SpriteSheet-Shields_2
+      name: shield_spriteSheet_2
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 399
-        height: 480
+        y: 768
+        width: 426.66666
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,8 +192,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5a73b8853b2957845a9789b3c70bfe2c
-      internalID: 1209934783
+      spriteID: 5441240d2fdc3a9488c0fd699db66620
+      internalID: 388125322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shield_spriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 426.66666
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4f212b1ee13b0e40b224e2aeb03d9ed
+      internalID: 640797019
       vertices: []
       indices: 
       edges: []
@@ -201,7 +222,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: f20fc7a9c0d28e8408f3b4d50d047e3f
+    spriteID: 976152759a5b02c458c9f6a66d6128fd
     internalID: 0
     vertices: []
     indices: 
@@ -209,9 +230,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SpriteSheet-Shields_0: 1067003809
-      SpriteSheet-Shields_1: -1792662493
-      SpriteSheet-Shields_2: 1209934783
+      shield_spriteSheet_0: -474796048
+      shield_spriteSheet_1: -1645597969
+      shield_spriteSheet_2: 388125322
+      shield_spriteSheet_3: 640797019
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

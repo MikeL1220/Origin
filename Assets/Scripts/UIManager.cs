@@ -24,16 +24,15 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Sprite[] _livesDisplay;
-   // private Sprite[] _livesDisplay;
+   
     private Image _currentLife;
 
     [SerializeField]
     private Sprite[] _shieldHealthVisualizer;
-   // [SerializeField]
-   // private GameObject _shieldHealthObj;
+  
 
     [SerializeField]
-    private SpriteRenderer _currentShieldHealthVisualizer;
+    private Image _currentShieldHealthVisualizer;
 
     private Slider _thrusterMeter;
 
@@ -47,32 +46,20 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+      
         _scoreText.text = "Score: " + _score;
 
-        //_currentLife = GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[0];
+        
         _gameOverDisplay.SetActive(false);
 
-        _currentShieldHealthVisualizer = GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>();
+        _currentShieldHealthVisualizer = GameObject.Find("Shield_Life").GetComponent<Image>();
 
         _thrusterMeter = GameObject.Find("Thruster_Charge").GetComponentInChildren<Slider>();
 
-        //  _currentShieldHealthVisualizer = _shieldHealthObj.GetComponent<SpriteRenderer>().sprite;
-
-        /*GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[2];
-
-        GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[1];
-
-        GameObject.Find("Shield_Health").GetComponent<SpriteRenderer>().sprite = _shieldHealthVisualizer[0];
-        */
-        /* GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[3];
-
-         GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[2];
-
-         GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[1];
-
-         GameObject.Find("Life_Display").GetComponent<SpriteRenderer>().sprite = _livesDisplay[0];
-        */
+       
+      
         _currentLife = GameObject.Find("Player_Lives").GetComponent<Image>();
+      
     }
 
 
@@ -123,6 +110,7 @@ public class UIManager : MonoBehaviour
     {
         _ammo = 15;
     }
+    
 
 
     public void ShieldHealthVisualizer(int shieldHealth)
@@ -131,18 +119,26 @@ public class UIManager : MonoBehaviour
         {
             case 1:
                 _currentShieldHealthVisualizer.sprite = _shieldHealthVisualizer[3];
-                _currentShieldHealthVisualizer.transform.position = new Vector3(-7.2f, 4.1f, 0.02f);
+                
                 break;
             case 2:
                 _currentShieldHealthVisualizer.sprite = _shieldHealthVisualizer[2];
-                _currentShieldHealthVisualizer.transform.position = new Vector3(-6.8f, 4.1f, 0.02f);
+                
+                
                 break;
             case 3:
                 _currentShieldHealthVisualizer.sprite = _shieldHealthVisualizer[1];
-                _currentShieldHealthVisualizer.transform.position = new Vector3(-6.51f, 4.1f, 0.02f);
+               
+
+                break;
+            case 0:
+                _currentShieldHealthVisualizer.sprite = _shieldHealthVisualizer[0];
+                
+
                 break;
             default:
                 _currentShieldHealthVisualizer.sprite = _shieldHealthVisualizer[0];
+               
                 break;
 
         }

@@ -1,9 +1,11 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+
 
 public class Player : MonoBehaviour
 {
@@ -73,11 +75,12 @@ public class Player : MonoBehaviour
     private bool _gameIsOver;
 
     private CameraEffects _camera;
-
-
+    [SerializeField]
+    private bool _thrusterActive = false;
 
     void Start()
     {
+
         transform.position = Vector3.zero;
         _laserOffset = 1.04f;
 
@@ -85,68 +88,125 @@ public class Player : MonoBehaviour
         _currentSpeed = _baseSpeed;
         _thrusterEngageCoroutine = null;
         _thrusterChargeCoroutine = null;
-
+        _thrusterCharge = _maxThrusters;
         _camera = GameObject.Find("Main Camera").GetComponent<CameraEffects>();
-
-
     }
+
+
+
 
 
     void Update()
     {
+
+
+
+        _laserOffset = 1.04f;
+
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+
+        _camera = GameObject.Find("Main Camera").GetComponent<CameraEffects>();
+
         Movement();
-        _uiManager.ThrusterMeter(_thrusterCharge);
-        FireLaser();
+        PlayerBounds();
         ThusterActication();
-        PlayerHealthVisual();
+            _uiManager.ThrusterMeter(_thrusterCharge);
+            FireLaser();
+            PlayerHealthVisual();
 
+
+        
     }
 
 
-    private void Movement()
-    {
-        //Consider changing to Input Manager(Get.Axis) 
+        private void Movement()
+        {
+            //Consider changing to Input Manager(Get.Axis) 
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+            transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _currentSpeed * Time.deltaTime);
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.Translate(Vector3.up * _currentSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.Translate(Vector3.down * _currentSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Translate(Vector3.right * _currentSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Translate(Vector3.left * _currentSpeed * Time.deltaTime);
-        }
 
-        if (transform.position.x > 11.3f)
-        {
-            transform.position = new Vector3(-11.3f, transform.position.y, 0);
-        }
 
-        if(transform.position.x < -11.3f)
-        {
-            transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
-        //add left hand wrapping 
-
-        if (transform.position.y > -1.2f)
+        private void PlayerBounds()
         {
-            transform.position = new Vector3(transform.position.x, -1.2f, 0);
+            if (transform.position.x > 11.3f)
+            {
+                transform.position = new Vector3(-11.3f, transform.position.y, 0);
+            }
+
+            if (transform.position.x < -11.3f)
+            {
+                transform.position = new Vector3(11.3f, transform.position.y, 0);
+            }
+            //add left hand wrapping 
+
+            if (transform.position.y > -1.2f)
+            {
+                transform.position = new Vector3(transform.position.x, -1.2f, 0);
+            }
+
+            if (transform.position.y < -5.4f)
+            {
+                transform.position = new Vector3(transform.position.x, -5.4f, 0);
+            }
+
         }
 
-        if (transform.position.y < -5.4f)
-        {
-            transform.position = new Vector3(transform.position.x, -5.4f, 0);
-        }
 
-    }
+//my attempt at fixing the known thruster bug. 
+//if the thursters hit zero and then i let go and let it charge to 1 and the renage the thurtsres its glitches changing values back and forth.
 
+    /*       IEnumerator ThrustersEngage()
+           {
+               //if the player presses shift 
+               //increase the speed of the player
+               //set thrusters active to true 
+               //while the thrusters are active 
+               //decrease the thruster charge 
+               //if the thuruster charge reaches 0 
+               // set speed back to normal
+               //stop decreasing thruster charge 
+               //set thruster active to false 
+
+
+               _currentSpeed = _currentSpeed + _speedBoostModifier;
+
+
+                   _currentSpeed = _currentSpeed - _speedBoostModifier;
+           while (true)
+           {
+               _thrusterCharge--;
+               _thrusterActive = true;
+               if (_thrusterCharge <= 0 || Input.GetKeyUp(KeyCode.LeftShift))
+               {
+                   _thrusterActive = false;
+                   break;
+               }
+               yield return new WaitForSeconds(1);
+
+
+           }
+
+
+               yield return new WaitForSeconds(1);
+
+           }
+           IEnumerator ThrustersDisengage()
+           {
+               while (true)
+               {
+               _thrusterActive = false;
+                   _thrusterCharge++;
+                   if (_thrusterCharge >= _maxThrusters)
+                   {
+                       break;
+                   }
+                   yield return new WaitForSeconds(1);
+               }
+               yield break;
+           }*/
 
     private void ThusterActication()
     {
@@ -162,7 +222,7 @@ public class Player : MonoBehaviour
 
         }
 
-        if(_thrusterCharge <= 0)
+        if (_thrusterCharge <= 0)
         {
             _currentSpeed = _baseSpeed;
         }
@@ -171,11 +231,11 @@ public class Player : MonoBehaviour
 
     IEnumerator ThrustersEngage()
     {
-        if(Input.GetKeyDown(KeyCode.LeftShift) && _thrusterCharge > 0) 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && _thrusterCharge > 0)
         {
             _currentSpeed = _currentSpeed + _thursterSpeedModifier;
         }
-      
+
         while (Input.GetKey(KeyCode.LeftShift) && _thrusterCharge > 0)
         {
             _thrusterCharge--;
@@ -188,9 +248,9 @@ public class Player : MonoBehaviour
 
     IEnumerator ThrusterCharge()
     {
-        if(Input.GetKeyUp(KeyCode.LeftShift) && _currentSpeed > _baseSpeed)
+        if (Input.GetKeyUp(KeyCode.LeftShift) && _currentSpeed > _baseSpeed)
         {
-            _currentSpeed = _currentSpeed - _thursterSpeedModifier; 
+            _currentSpeed = _currentSpeed - _thursterSpeedModifier;
         }
 
         while (_thrusterCharge < _maxThrusters)
@@ -213,125 +273,125 @@ public class Player : MonoBehaviour
 
 
     private void FireLaser()
-    {
-        if (_currentAmmo > 0)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+            if (_currentAmmo > 0)
             {
-                _canFire = Time.time + _fireRate;
-
-
-                if (_tripleShotActive == true)
+                if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
                 {
-                    Instantiate(_tripleShot, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+                    _canFire = Time.time + _fireRate;
+
+
+                    if (_tripleShotActive == true)
+                    {
+                        Instantiate(_tripleShot, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+
+                    }
+                    else
+                    {
+                        Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+
+                    }
+                    _laserSound.Play();
+                    _currentAmmo--;
+                    _uiManager.ReduceAmmoCount();
+
 
                 }
-                else
-                {
-                    Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
 
-                }
+            }
+
+        }
+
+
+        public void TripleShotPowerupActive()
+        {
+            _tripleShotActive = true;
+            StartCoroutine("TripleShotCooldown");
+        }
+
+        IEnumerator TripleShotCooldown()
+        {
+            if (_tripleShotActive == true)
+            {
+                yield return new WaitForSeconds(_tripleShotCooldown);
+                _tripleShotActive = false;
+            }
+        }
+
+
+        public void RapidFirePowerupActive()
+        {
+            StartCoroutine(RapidFireLasers());
+        }
+
+        IEnumerator RapidFireLasers()
+        {
+
+            for (int i = 0; i < 100; i++)
+            {
+                Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
+                yield return new WaitForSeconds(.1f);
                 _laserSound.Play();
-                _currentAmmo--;
-                _uiManager.ReduceAmmoCount();
-
-
             }
 
         }
 
-    }
 
 
-    public void TripleShotPowerupActive()
-    {
-        _tripleShotActive = true;
-        StartCoroutine("TripleShotCooldown");
-    }
-
-    IEnumerator TripleShotCooldown()
-    {
-        if (_tripleShotActive == true)
+        public void SpeedBoostPowerupActive()
         {
-            yield return new WaitForSeconds(_tripleShotCooldown);
-            _tripleShotActive = false;
-        }
-    }
+            _speedBoostActive = true;
+            _currentSpeed += _speedBoostModifier;
 
-
-    public void RapidFirePowerupActive()
-    {
-        StartCoroutine(RapidFireLasers());
-    }
-
-    IEnumerator RapidFireLasers()
-    {
-
-        for (int i = 0; i < 100; i++)
-        {
-            Instantiate(_laser, new Vector3(transform.position.x, transform.position.y + _laserOffset, 0), Quaternion.identity);
-            yield return new WaitForSeconds(.1f);
-            _laserSound.Play();
+            StartCoroutine("SpeedBoostCooldown");
         }
 
-    }
-
-
-
-    public void SpeedBoostPowerupActive()
-    {
-        _speedBoostActive = true;
-        _currentSpeed += _speedBoostModifier;
-
-        StartCoroutine("SpeedBoostCooldown");
-    }
-
-    IEnumerator SpeedBoostCooldown()
-    {
-        if (_speedBoostActive == true)
+        IEnumerator SpeedBoostCooldown()
         {
-            yield return new WaitForSeconds(_speedBoostCooldown);
-            _speedBoostActive = false;
-            _currentSpeed -= _speedBoostModifier;
-        }
-    }
-
-
-
-    public void ShieldPowerupActive(bool shieldActive)
-    {
-        _shieldActive = shieldActive;
-        _shieldActive = true;
-        _shield.SetActive(true);
-        _shieldHealth = 3;
-        _uiManager.ShieldHealthVisualizer(_shieldHealth);
-    }
-
-
-    //Divide into 2 seperate dmage and update dmage visual 
-    public void Damage()
-    {
-        if (_shieldActive == true)
-        {
-            _shieldHealth--;
-            _uiManager.ShieldHealthVisualizer(_shieldHealth);
-            if (_shieldHealth == 0)
+            if (_speedBoostActive == true)
             {
-                _shield.SetActive(false);
-                _shieldActive = false;
+                yield return new WaitForSeconds(_speedBoostCooldown);
+                _speedBoostActive = false;
+                _currentSpeed -= _speedBoostModifier;
             }
+        }
 
-        }
-        else
+
+
+        public void ShieldPowerupActive(bool shieldActive)
         {
-            _lives--;
-            _uiManager.UpdateLifeDisplay(_lives);
-            _explosionSound.Play();
+            _shieldActive = shieldActive;
+            _shieldActive = true;
+            _shield.SetActive(true);
+            _shieldHealth = 3;
+            _uiManager.ShieldHealthVisualizer(_shieldHealth);
         }
-    }
-    private void PlayerHealthVisual()
-    {
-      
+
+
+        //Divide into 2 seperate dmage and update dmage visual 
+        public void Damage()
+        {
+            if (_shieldActive == true)
+            {
+                _shieldHealth--;
+                _uiManager.ShieldHealthVisualizer(_shieldHealth);
+                if (_shieldHealth == 0)
+                {
+                    _shield.SetActive(false);
+                    _shieldActive = false;
+                }
+
+            }
+            else
+            {
+                _lives--;
+                _uiManager.UpdateLifeDisplay(_lives);
+                _explosionSound.Play();
+            }
+        }
+        private void PlayerHealthVisual()
+        {
+
 
             //this never happens - I belive this is checked when we gain lifr form 2 tro 3 
             if (_lives == 3)
@@ -350,62 +410,63 @@ public class Player : MonoBehaviour
                 _rightDamage.SetActive(true);
             }
 
-     
-        if (_lives == 0)
-        {
 
-            GameOver();
-            Destroy(this.gameObject);
+            if (_lives == 0)
+            {
+
+                GameOver();
+                Destroy(this.gameObject);
+
+            }
 
         }
 
-    }
 
 
-
-    private void GameOver()
-    {
-        if (_gameIsOver == false)
+        private void GameOver()
         {
-            _gameIsOver = true;
-            _uiManager.StartCoroutine("GameOverFlicker");
+            if (_gameIsOver == false)
+            {
+                _gameIsOver = true;
+                _uiManager.StartCoroutine("GameOverFlicker");
+            }
+
         }
 
-    }
 
 
 
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        switch ((other.tag))
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            case "EnemyLaser":
-                Damage();
-                _camera.StartCoroutine("CameraShake");
-                _explosionSound.Play();
-                Destroy(other.gameObject);
-                break;
-            case "AmmoBox":
-                _currentAmmo = 15;
-                _uiManager.ResetAmmoCount();
-                _collectionSound.Play();
-                Destroy(other.gameObject);
-                break;
-            case "RepairKit":
-                //changed to 1 from 2 
-                if(_lives < 3)
-                {
-                    _lives = _lives + 1;
-                    _uiManager.UpdateLifeDisplay(_lives);
-                }
-                _collectionSound.Play();
-                Destroy(other.gameObject);
-                break;
+            switch ((other.tag))
+            {
+                case "EnemyLaser":
+                    Damage();
+                    _camera.StartCoroutine("CameraShake");
+                    _explosionSound.Play();
+                    Destroy(other.gameObject);
+                    break;
+                case "AmmoBox":
+                    _currentAmmo = 15;
+                    _uiManager.ResetAmmoCount();
+                    _collectionSound.Play();
+                    Destroy(other.gameObject);
+                    break;
+                case "RepairKit":
+                    //changed to 1 from 2 
+                    if (_lives < 3)
+                    {
+                        _lives = _lives + 1;
+                        _uiManager.UpdateLifeDisplay(_lives);
+                    }
+                    _collectionSound.Play();
+                    Destroy(other.gameObject);
+                    break;
+            }
         }
-
     }
-}
+
+
 
 
 
