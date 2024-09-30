@@ -19,6 +19,10 @@ public class Enemy : MonoBehaviour
     private AudioSource _explosionSound;
 
     private CameraEffects _camera;
+    [SerializeField]
+    private bool _newEnemyMove;
+
+    private bool _moveDirection = false;
 
 
     void Start()
@@ -32,6 +36,7 @@ public class Enemy : MonoBehaviour
         _explosionSound = GameObject.Find("Explosion_Sound").GetComponent<AudioSource>();
 
         _camera = GameObject.Find("Main Camera").GetComponent<CameraEffects>();
+        StartCoroutine(NewEnemyMovement());
 
     }
 
@@ -39,19 +44,49 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         EnemyMovement();
-
+        
     }
 
 
 
     private void EnemyMovement()
     {
-        transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
+        
+        //use a random number gegnerator to determine if enemies move side to side 
+        if (_newEnemyMove == true && _moveDirection == false) 
+        {
+            transform.Translate(new Vector3(-1,-1,0) * _enemySpeed * Time.deltaTime);
+        }
+        else if(_newEnemyMove == true && _moveDirection ==true)
+        {
+            transform.Translate(new Vector3(1, -1, 0) * _enemySpeed * Time.deltaTime);
+        }
+        else { transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime); }
+        
+        
 
         if (transform.position.y < -7.7)
         {
             transform.position = new Vector3(Random.Range(-10, 10), 6.2f, 0);
         }
+    }
+
+  IEnumerator NewEnemyMovement()
+    {
+        int RandomInt = Random.Range(1, 3);
+        _newEnemyMove = true;
+        //false is left and true is right 
+        _moveDirection = false;
+        if(RandomInt == 1)
+        {
+            _moveDirection = false;
+        }
+        else if (RandomInt == 2) { _moveDirection = true; }  
+
+        yield return new WaitForSeconds(6);
+        _newEnemyMove = false;
+        yield return new WaitForSeconds(7); 
+
     }
 
 
