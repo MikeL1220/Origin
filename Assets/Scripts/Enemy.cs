@@ -52,7 +52,7 @@ public class Enemy : MonoBehaviour
     private void EnemyMovement()
     {
         
-        //use a random number gegnerator to determine if enemies move side to side 
+        
         if (_newEnemyMove == true && _moveDirection == false) 
         {
             transform.Translate(new Vector3(-1,-1,0) * _enemySpeed * Time.deltaTime);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -49,22 +50,29 @@ public class SpawnManager : MonoBehaviour
     private bool _repairKitSpawned;
 
     private bool _rarePowerUpSpawned;
+    [SerializeField]
+    private int _enemyRespawnCooldown; 
+    private int _wave = 0; 
 
     void Start()
     {
         _enemyScript = GetComponent<Enemy>();
         _enemyContainer = GameObject.Find("Enemy Container");
         _ySpawn = 4;
+       
     }
 
     private void Update()
     {
         StartSpawning();
+       
     }
 
 
     public void StartSpawning()
     {
+        //prevent players from starting in wave if they sit in the destroy asteroid screen for longer than 10 minutes 
+        if(_asteroidObject != null && Time.timeSinceLevelLoad > 1000.00f) { SceneManager.LoadScene(1); }
 
         if (_asteroidObject == null)
         {
@@ -73,24 +81,54 @@ public class SpawnManager : MonoBehaviour
             StartCoroutine(RarePowerUpSpawn());
             StartCoroutine(AmmoSpawn());
             StartCoroutine(RepairKitSpawn());
+            WaveCounter();
+
 
         }
 
     }
 
+    private void WaveCounter()
+    {
+        float gameTime = Time.timeSinceLevelLoad;
+        Debug.Log(gameTime);
+        Debug.Log(_wave); 
+        if (gameTime <= 10.00f)
+        {
+            _wave = 0;
+
+        }
+        else if (gameTime > 1000.00f && gameTime < 2000.00f)
+        {
+            _wave = 1;
+        }
+        else if (gameTime > 2000.00f && gameTime < 3000.00f)
+        {
+            _wave = 2;
+        }
+        else if (gameTime > 3000.00f && gameTime < 4000.00f)
+        {
+            _wave = 3; 
+        }
+        else { _wave = 4; }
+      
+
+    }
 
     IEnumerator SpawnEnemy()
     {
-        yield return new WaitForSeconds(2);
+
+        
         if (_respawnEnemy == true && _playerAlive == true)
         {
+            
             _randomXSpawn = Random.Range(-10, 10);
             GameObject newEnemy = Instantiate(_enemy, new Vector3(_randomXSpawn, _ySpawn, 0), Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             GameObject enemyLaser = Instantiate(_enemyLaser, new Vector3(newEnemy.transform.position.x, newEnemy.transform.position.y, 0), Quaternion.identity);
             _respawnEnemy = false;
             _laserSound.Play();
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(_enemyRespawnCooldown - _wave);
             _respawnEnemy = true;
             PlayerDeath();
         }
@@ -167,6 +205,7 @@ public class SpawnManager : MonoBehaviour
         if (_player == null)
         {
             _playerAlive = false;
+            
         }
     }
 

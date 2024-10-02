@@ -2360,6 +2360,7 @@ MonoBehaviour:
   _laserSound: {fileID: 1261640604}
   _explosionSound: {fileID: 65677735}
   _collectionSound: {fileID: 183628998}
+  _thrusterActive: 0
 --- !u!212 &1356246265
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2869,6 +2870,7 @@ MonoBehaviour:
   _laserSound: {fileID: 1261640604}
   _ammoBox: {fileID: 8269862733621062610, guid: 59b3aa0593d9f7042a4bcbff1bc3fb71, type: 3}
   _repairKit: {fileID: 7158862225420458595, guid: 535d792d14854d64e858b2e011a419db, type: 3}
+  _enemyRespawnCooldown: 10
 --- !u!4 &1824071645
 Transform:
   m_ObjectHideFlags: 0
