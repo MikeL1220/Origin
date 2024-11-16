@@ -8,18 +8,19 @@ TagManager:
   - EnemyLaser
   - AmmoBox
   - RepairKit
+  - debuff
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - BackGround
   - Water
   - UI
   - 
   - 
   - Post Processing
   - 
-  - 
+  - ForeGround
   - 
   - 
   - 

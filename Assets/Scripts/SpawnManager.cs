@@ -52,7 +52,13 @@ public class SpawnManager : MonoBehaviour
     private bool _rarePowerUpSpawned;
     [SerializeField]
     private int _enemyRespawnCooldown; 
-    private int _wave = 0; 
+    private int _wave = 0;
+
+    [SerializeField]
+    private bool _debuffSpawned;
+    [SerializeField]
+    private GameObject _shockDebuff;
+
 
     void Start()
     {
@@ -82,6 +88,7 @@ public class SpawnManager : MonoBehaviour
             StartCoroutine(AmmoSpawn());
             StartCoroutine(RepairKitSpawn());
             WaveCounter();
+            StartCoroutine(DebuffSpawn());
 
 
         }
@@ -197,6 +204,18 @@ public class SpawnManager : MonoBehaviour
             _repairKitSpawned = false;
         }
 
+    }
+
+    IEnumerator DebuffSpawn()
+    {
+        if (_debuffSpawned == false)
+        {
+            GameObject newDebuff = Instantiate(_shockDebuff, new Vector3(Random.Range(-10,10),4, 0), Quaternion.identity);
+            _debuffSpawned = true;
+            yield return new WaitForSeconds(25);
+            _debuffSpawned = false; 
+        }
+        yield return new WaitForSeconds(25); 
     }
 
 

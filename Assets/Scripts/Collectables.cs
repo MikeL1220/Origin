@@ -7,6 +7,8 @@ public class Ammo : MonoBehaviour
 
     [SerializeField]
     private int _collectableSpeed;
+    [SerializeField]
+    private int _debuffSpeed;
 
     void Update()
     {
@@ -15,7 +17,12 @@ public class Ammo : MonoBehaviour
 
     private void Movement()
     {
-        transform.Translate(Vector3.down * _collectableSpeed * Time.deltaTime);
+        if (tag == "debuff")
+        {
+            transform.Translate(Vector3.down * _debuffSpeed * Time.deltaTime);
+        }
+        else { transform.Translate(Vector3.down * _collectableSpeed * Time.deltaTime); }
+        
 
         if (transform.position.y < -7.5f)
         {

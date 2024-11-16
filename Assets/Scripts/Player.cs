@@ -71,16 +71,20 @@ public class Player : MonoBehaviour
     private AudioSource _explosionSound;
     [SerializeField]
     private AudioSource _collectionSound;
+    [SerializeField]
+    private AudioSource _shockSound;
 
     private bool _gameIsOver;
 
     private CameraEffects _camera;
-    [SerializeField]
-    private bool _thrusterActive = false;
+   
+
+    private bool _shockIsActive; 
+
 
     void Start()
     {
-
+       
         transform.position = Vector3.zero;
         _laserOffset = 1.04f;
 
@@ -121,10 +125,15 @@ public class Player : MonoBehaviour
 
         private void Movement()
         {
-            //Consider changing to Input Manager(Get.Axis) 
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
-            transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _currentSpeed * Time.deltaTime);
+
+    
+                // Consider changing to Input Manager(Get.Axis)
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _currentSpeed * Time.deltaTime);
+
+            
+       
 
 
 
@@ -367,8 +376,25 @@ public class Player : MonoBehaviour
             _uiManager.ShieldHealthVisualizer(_shieldHealth);
         }
 
+    private IEnumerator _shockActive()
+    {
+        _shockIsActive = true;
+        if(_shockIsActive ==true)
+        {
+            ShockEffect();
+        }
+        yield return new WaitForSeconds(10);
+        _shockIsActive = false;
+        _currentSpeed = _baseSpeed;
+    }
 
-        //Divide into 2 seperate dmage and update dmage visual 
+    private void ShockEffect()
+    {
+        _currentSpeed = 0;
+    }
+
+
+      
         public void Damage()
         {
             if (_shieldActive == true)
@@ -445,21 +471,36 @@ public class Player : MonoBehaviour
                     _camera.StartCoroutine("CameraShake");
                     _explosionSound.Play();
                     Destroy(other.gameObject);
-                    break;
+                _collectionSound.Play();
+                break;
                 case "AmmoBox":
                     _currentAmmo = 15;
                     _uiManager.ResetAmmoCount();
                     _collectionSound.Play();
                     Destroy(other.gameObject);
-                    break;
+                _collectionSound.Play();
+                break;
                 case "RepairKit":
                     //changed to 1 from 2 
                     if (_lives < 3)
                     {
                         _lives = _lives + 1;
                         _uiManager.UpdateLifeDisplay(_lives);
-                    }
                     _collectionSound.Play();
+
+                }
+                break;
+            case "debuff":
+                    {
+                    //call the effect of the debuff 
+                    StartCoroutine(_shockActive());
+                    //Play Debuff Sound - electricity sound 
+                    _shockSound.Play();
+                    //destroy the debuff
+                    Destroy(other.gameObject);
+                  
+                    }
+               
                     Destroy(other.gameObject);
                     break;
             }
