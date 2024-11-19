@@ -6,6 +6,9 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private float _enemySpeed;
+    // 0 = Notmal Enemy , 1 = como_enemy
+    [SerializeField]
+    private int _enemyID;
 
     //  private bool _enemyLaserCooldown; 
 
@@ -51,24 +54,38 @@ public class Enemy : MonoBehaviour
 
     private void EnemyMovement()
     {
-        
-        
-        if (_newEnemyMove == true && _moveDirection == false) 
+        switch(_enemyID)
         {
-            transform.Translate(new Vector3(-1,-1,0) * _enemySpeed * Time.deltaTime);
-        }
-        else if(_newEnemyMove == true && _moveDirection ==true)
-        {
-            transform.Translate(new Vector3(1, -1, 0) * _enemySpeed * Time.deltaTime);
-        }
-        else { transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime); }
-        
-        
+            case 0:
+                if (_newEnemyMove == true && _moveDirection == false)
+                {
+                    transform.Translate(new Vector3(-1, -1, 0) * _enemySpeed * Time.deltaTime);
+                }
+                else if (_newEnemyMove == true && _moveDirection == true)
+                {
+                    transform.Translate(new Vector3(1, -1, 0) * _enemySpeed * Time.deltaTime);
+                }
+                else { transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime); }
 
-        if (transform.position.y < -7.7)
-        {
-            transform.position = new Vector3(Random.Range(-10, 10), 6.2f, 0);
+                if (transform.position.y < -7.7)
+                {
+                    transform.position = new Vector3(Random.Range(-10, 10), 6.2f, 0);
+                }
+                break;
+            case 1:
+                Vector3 seekPLayer = _player.transform.position;
+                Vector3 enemyPos = transform.position;
+                transform.position = Vector3.MoveTowards(enemyPos, seekPLayer,_enemySpeed * Time.deltaTime);
+                //make enemy face player change its rotation
+                float enemyZ = _player.transform.position.y;
+                transform.localEulerAngles = new Vector3(0f,0f,enemyZ * _enemySpeed);
+                if (transform.position.y < -7.7)
+                {
+                    Destroy(this.gameObject);
+                }
+                break;
         }
+        
     }
 
   IEnumerator NewEnemyMovement()

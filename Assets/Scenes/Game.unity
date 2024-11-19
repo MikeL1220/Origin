@@ -2929,6 +2929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemy: {fileID: 4566277279967091619, guid: 353464e00241ad74882a6e2ea269b47f, type: 3}
+  _comoEnemy: {fileID: 5966903539295257658, guid: 8a321a876b9952241a243500a034f2d8, type: 3}
   _player: {fileID: 1356246262}
   _powerUpID:
   - {fileID: 6610857066905215436, guid: c42c99686a18576469f3aa079d0a5470, type: 3}

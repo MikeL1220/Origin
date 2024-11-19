@@ -8,9 +8,12 @@ public class SpawnManager : MonoBehaviour
     private Enemy _enemyScript;
     [SerializeField]
     private GameObject _enemy;
+    [SerializeField]
+    private GameObject _comoEnemy;
 
     private GameObject _enemyContainer;
-    private bool _respawnEnemy = true;
+    private bool _respawnBaseEnemy = true;
+    private bool _respawnComoEnemy = false; 
 
     private float _randomXSpawn;
     private float _ySpawn;
@@ -82,7 +85,8 @@ public class SpawnManager : MonoBehaviour
 
         if (_asteroidObject == null)
         {
-            StartCoroutine(SpawnEnemy());
+            StartCoroutine(SpawnBaseEnemy());
+            if(_wave >= 2) {StartCoroutine(SpawnComoEnemy()); }
             StartCoroutine(PowerUpSpawn());
             StartCoroutine(RarePowerUpSpawn());
             StartCoroutine(AmmoSpawn());
@@ -103,11 +107,14 @@ public class SpawnManager : MonoBehaviour
         if (gameTime <= 10.00f)
         {
             _wave = 0;
+           
 
         }
         else if (gameTime > 1000.00f && gameTime < 2000.00f)
         {
             _wave = 1;
+            
+
         }
         else if (gameTime > 2000.00f && gameTime < 3000.00f)
         {
@@ -122,21 +129,36 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-    IEnumerator SpawnEnemy()
+    IEnumerator SpawnBaseEnemy()
     {
 
         
-        if (_respawnEnemy == true && _playerAlive == true)
+        if (_respawnBaseEnemy == true && _playerAlive == true)
         {
             
             _randomXSpawn = Random.Range(-10, 10);
             GameObject newEnemy = Instantiate(_enemy, new Vector3(_randomXSpawn, _ySpawn, 0), Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             GameObject enemyLaser = Instantiate(_enemyLaser, new Vector3(newEnemy.transform.position.x, newEnemy.transform.position.y, 0), Quaternion.identity);
-            _respawnEnemy = false;
+            _respawnBaseEnemy = false;
             _laserSound.Play();
             yield return new WaitForSeconds(_enemyRespawnCooldown - _wave);
-            _respawnEnemy = true;
+            _respawnBaseEnemy = true;
+            PlayerDeath();
+        }
+
+    }
+
+    IEnumerator SpawnComoEnemy()
+    {
+        if ( _respawnComoEnemy == false && _playerAlive == true)
+        {
+            _randomXSpawn = Random.Range(-10, 10);
+            GameObject newEnemy = Instantiate(_comoEnemy, new Vector3(_randomXSpawn, _ySpawn, 0), Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
+            _respawnComoEnemy = true;
+            yield return new WaitForSeconds(_enemyRespawnCooldown - _wave);
+            _respawnComoEnemy = false;
             PlayerDeath();
         }
 
