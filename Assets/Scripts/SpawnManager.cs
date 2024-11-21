@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,10 +11,13 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemy;
     [SerializeField]
     private GameObject _comoEnemy;
+    [SerializeField]
+    private GameObject _shieldEnemy;
 
     private GameObject _enemyContainer;
     private bool _respawnBaseEnemy = true;
-    private bool _respawnComoEnemy = false; 
+    private bool _respawnComoEnemy = false;
+    private bool _respawnShieldEnemy = false; 
 
     private float _randomXSpawn;
     private float _ySpawn;
@@ -62,6 +66,42 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _shockDebuff;
 
+    [SerializeField]
+    private float _wave0End;
+    [SerializeField]
+    private float _wave1Start;
+    [SerializeField]
+    private float _wave1End;
+    [SerializeField]
+    private float _wave2Start;
+    [SerializeField]
+    private float _wave2End;
+    [SerializeField]
+    private float _wave3Start;
+    [SerializeField]
+    private float _wave3End;
+    [SerializeField] 
+    private float _wave4Start;
+
+    [SerializeField]
+    private int _powerUpMinSpawnTimer;
+    [SerializeField]
+    private int _powerUpMaxSpawnTimer;
+
+    [SerializeField]
+    private int _rarePowerUpSpawnCooldown;
+    [SerializeField]
+    private int _rarePowerUpSpawnCooldownChance1to4;
+
+    [SerializeField]
+    private int _ammoRespawn;
+
+    [SerializeField]
+    private int _repairKitRespawn;
+
+    [SerializeField]
+    private int _debuffRespawn;
+
 
     void Start()
     {
@@ -74,6 +114,7 @@ public class SpawnManager : MonoBehaviour
     private void Update()
     {
         StartSpawning();
+        Debug.Log(_wave);
        
     }
 
@@ -86,7 +127,8 @@ public class SpawnManager : MonoBehaviour
         if (_asteroidObject == null)
         {
             StartCoroutine(SpawnBaseEnemy());
-            if(_wave >= 2) {StartCoroutine(SpawnComoEnemy()); }
+            if (_wave >= 1) { StartCoroutine(SpawnShieldEnemy()); }
+            if (_wave >= 2) {StartCoroutine(SpawnComoEnemy()); }
             StartCoroutine(PowerUpSpawn());
             StartCoroutine(RarePowerUpSpawn());
             StartCoroutine(AmmoSpawn());
@@ -98,33 +140,36 @@ public class SpawnManager : MonoBehaviour
         }
 
     }
+   
+    
 
     private void WaveCounter()
     {
         float gameTime = Time.timeSinceLevelLoad;
+        Debug.Log(_wave);
         Debug.Log(gameTime);
-        Debug.Log(_wave); 
-        if (gameTime <= 10.00f)
+       
+        if (gameTime <= _wave0End)
         {
             _wave = 0;
            
 
         }
-        else if (gameTime > 1000.00f && gameTime < 2000.00f)
+        else if (gameTime > _wave1Start && gameTime < _wave1End)
         {
             _wave = 1;
             
 
         }
-        else if (gameTime > 2000.00f && gameTime < 3000.00f)
+        else if (gameTime > _wave2Start && gameTime < _wave2End)
         {
             _wave = 2;
         }
-        else if (gameTime > 3000.00f && gameTime < 4000.00f)
+        else if (gameTime > _wave3Start && gameTime < _wave3End)
         {
             _wave = 3; 
         }
-        else { _wave = 4; }
+        else if(gameTime > _wave4Start ){ _wave = 4; }
       
 
     }
@@ -164,6 +209,20 @@ public class SpawnManager : MonoBehaviour
 
     }
 
+    IEnumerator SpawnShieldEnemy()
+    {
+        if (_respawnShieldEnemy == false && _playerAlive == true)
+        {
+            _randomXSpawn = Random.Range(-10, 10);
+            GameObject newEnemy = Instantiate(_shieldEnemy, new Vector3(_randomXSpawn, _ySpawn, 0), Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
+            _respawnShieldEnemy = true;
+            yield return new WaitForSeconds(_enemyRespawnCooldown - _wave);
+            _respawnShieldEnemy = false;
+            PlayerDeath();
+        }
+
+    }
 
     IEnumerator PowerUpSpawn()
     {
@@ -173,32 +232,33 @@ public class SpawnManager : MonoBehaviour
             _powerUpIDSelector = Random.Range(0, 3);
             GameObject newPowerUp = Instantiate(_powerUpID[_powerUpIDSelector], new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
             _respawnPowerup = false;
-            yield return new WaitForSeconds(Random.Range(10, 15));
+            yield return new WaitForSeconds(Random.Range(_powerUpMinSpawnTimer, _powerUpMaxSpawnTimer));
             _respawnPowerup = true;
         }
 
     }
 
-
+  
     IEnumerator RarePowerUpSpawn()
     {
-        yield return new WaitForSeconds(60);
+     
+        yield return new WaitForSeconds(_rarePowerUpSpawnCooldown);
         if (_rarePowerUpSpawned == false)
         {
 
             int spawnChance = Random.Range(0, 4);
-            if (spawnChance >= 3)
+            if (spawnChance >= _rarePowerUpSpawnCooldownChance1to4)
             {
                 GameObject rarePowerUp = Instantiate(_powerUpID[3], new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
                 _rarePowerUpSpawned = true;
-                yield return new WaitForSeconds(60);
+                yield return new WaitForSeconds(_rarePowerUpSpawnCooldown);
                 _rarePowerUpSpawned = false;
             }
         }
 
     }
 
-
+    
     IEnumerator AmmoSpawn()
     {
         yield return new WaitForSeconds(5);
@@ -207,13 +267,13 @@ public class SpawnManager : MonoBehaviour
 
             GameObject newAmmoBox = Instantiate(_ammoBox, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
             _ammoSpawned = true;
-            yield return new WaitForSeconds(20);
+            yield return new WaitForSeconds(_ammoRespawn);
             _ammoSpawned = false;
         }
 
     }
 
-
+    
     IEnumerator RepairKitSpawn()
     {
         yield return new WaitForSeconds(5);
@@ -222,22 +282,22 @@ public class SpawnManager : MonoBehaviour
 
             GameObject newRepairKit = Instantiate(_repairKit, new Vector3(Random.Range(-10, 10), 4, 0), Quaternion.identity);
             _repairKitSpawned = true;
-            yield return new WaitForSeconds(35);
+            yield return new WaitForSeconds(_repairKitRespawn);
             _repairKitSpawned = false;
         }
 
     }
-
+    
     IEnumerator DebuffSpawn()
     {
         if (_debuffSpawned == false)
         {
             GameObject newDebuff = Instantiate(_shockDebuff, new Vector3(Random.Range(-10,10),4, 0), Quaternion.identity);
             _debuffSpawned = true;
-            yield return new WaitForSeconds(25);
+            yield return new WaitForSeconds(_debuffRespawn);
             _debuffSpawned = false; 
         }
-        yield return new WaitForSeconds(25); 
+        yield return new WaitForSeconds(_debuffRespawn); 
     }
 
 

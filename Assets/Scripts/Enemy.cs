@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private int _enemyID;
 
+    private bool _enemyShieldActive = true;
+
     //  private bool _enemyLaserCooldown; 
 
 
@@ -84,6 +86,22 @@ public class Enemy : MonoBehaviour
                     Destroy(this.gameObject);
                 }
                 break;
+            case 2:
+                if (_newEnemyMove == true && _moveDirection == false)
+                {
+                    transform.Translate(new Vector3(-1, -1, 0) * _enemySpeed * Time.deltaTime);
+                }
+                else if (_newEnemyMove == true && _moveDirection == true)
+                {
+                    transform.Translate(new Vector3(1, -1, 0) * _enemySpeed * Time.deltaTime);
+                }
+                else { transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime); }
+
+                if (transform.position.y < -7.7)
+                {
+                    transform.position = new Vector3(Random.Range(-10, 10), 6.2f, 0);
+                }
+                break;
         }
         
     }
@@ -112,25 +130,69 @@ public class Enemy : MonoBehaviour
     {
         if (other.tag == "Laser")
         {
-            Destroy(other.gameObject);
-            _enemyExplosion.SetTrigger("EnemyDeath");
-            this.gameObject.GetComponent<Collider2D>().enabled = false;
-            Destroy(this.gameObject, 1.5f);
-            _uiManager.UpdateScore();
-            _explosionSound.Play();
+            if (_enemyID == 2)
+            {
+                GameObject enemyShield = GameObject.Find("Enemy Shield");
+                Destroy(enemyShield);
+                if(enemyShield == null)
+                {
+                    Destroy(other.gameObject);
+                    _enemyExplosion.SetTrigger("EnemyDeath");
+                    this.gameObject.GetComponent<Collider2D>().enabled = false;
+                    Destroy(this.gameObject, 1.5f);
+                    _uiManager.UpdateScore();
+                    _explosionSound.Play();
+                }
+            
+            }
+            else
 
+            {
+                Destroy(other.gameObject);
+                _enemyExplosion.SetTrigger("EnemyDeath");
+                this.gameObject.GetComponent<Collider2D>().enabled = false;
+                Destroy(this.gameObject, 1.5f);
+                _uiManager.UpdateScore();
+                _explosionSound.Play();
+            }
         }
+
+
+    
 
         if (other.tag == "Player")
         {
-            _player.Damage();
-            _enemyExplosion.SetTrigger("EnemyDeath");
-            _camera.StartCoroutine("CameraShake");
-            _enemySpeed = 0;
-            this.gameObject.GetComponent<Collider2D>().enabled = false;
-            Destroy(this.gameObject, 1.5f);
-            _explosionSound.Play();
+            GameObject enemyShield = GameObject.Find("Enemy Shield");
+            if (_enemyID == 2 && enemyShield != null)
+            {
+               
+                Destroy(enemyShield);
+                _player.Damage();
+                _camera.StartCoroutine("CameraShake");
+                _explosionSound.Play();
+                if (enemyShield == null)
+                {
+                    _player.Damage();
+                    _enemyExplosion.SetTrigger("EnemyDeath");
+                    _camera.StartCoroutine("CameraShake");
+                    _enemySpeed = 0;
+                    this.gameObject.GetComponent<Collider2D>().enabled = false;
+                    Destroy(this.gameObject, 1.5f);
+                    _explosionSound.Play();
+                }
 
+
+            }
+            else
+            {
+                _player.Damage();
+                _enemyExplosion.SetTrigger("EnemyDeath");
+                _camera.StartCoroutine("CameraShake");
+                _enemySpeed = 0;
+                this.gameObject.GetComponent<Collider2D>().enabled = false;
+                Destroy(this.gameObject, 1.5f);
+                _explosionSound.Play();
+            }
 
         }
 
